@@ -1,0 +1,944 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>스위치 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  /* ------------------------------------------------------------------
+     Design tokens adapted from the Toss (TDS) design system reference:
+     cool-neutral canvas, single brand-blue accent, hairline borders,
+     aggressive-but-flat rounding, tabular numerals, restrained motion.
+     Pretendard (TDS's substitute font) isn't on Google Fonts, so we use
+     the same fallback stack TDS itself recommends, ending in Noto Sans KR.
+  ------------------------------------------------------------------- */
+  :root{
+    --bg:#f2f4f6; --surface:#ffffff; --surface-2:#f9fafb; --surface-3:#f2f4f6;
+    --border:#e5e8eb; --border-soft:#eef0f2; --border-strong:#d1d6db;
+    --text:#191f28; --text-dim:#4e5968; --text-faint:#8b95a1; --text-placeholder:#b0b8c1;
+    --brand:#3182f6; --brand-strong:#2272eb; --brand-weak:#eff6ff; --on-brand:#ffffff;
+    --linear:#3182f6; --linear-soft:#eff6ff;
+    --tactile:#e8630a; --tactile-soft:#fef0e6;
+    --clicky:#f04452; --clicky-soft:#feecee;
+    --hall:#12b564; --hall-soft:#e7f9f0;
+    --good:#12b564; --good-soft:#e7f9f0; --bad:#f04452; --bad-soft:#feecee;
+    --radius-xs:6px; --radius-sm:10px; --radius-md:14px; --radius-lg:20px; --radius-full:999px;
+    --shadow-1: 0 1px 2px rgba(15,23,42,.04), 0 1px 1px rgba(15,23,42,.04);
+    --shadow-2: 0 4px 12px rgba(15,23,42,.07), 0 1px 2px rgba(15,23,42,.04);
+    --shadow-3: 0 12px 32px rgba(15,23,42,.12), 0 2px 6px rgba(15,23,42,.06);
+    --ease: cubic-bezier(.22,.61,.36,1);
+    --dur-fast:120ms; --dur-base:200ms; --dur-slow:320ms;
+    --avatar-1:#3182f6; --avatar-1-soft:#eff6ff;
+    --avatar-2:#e8630a; --avatar-2-soft:#fef0e6;
+    --avatar-3:#f04452; --avatar-3-soft:#feecee;
+    --avatar-4:#12b564; --avatar-4-soft:#e7f9f0;
+    --avatar-5:#8b5cf6; --avatar-5-soft:#f3effe;
+    --avatar-6:#4e5968; --avatar-6-soft:#f2f4f6;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0e1116; --surface:#171b21; --surface-2:#1c2028; --surface-3:#232830;
+      --border:#2b303a; --border-soft:#20242c; --border-strong:#3a414d;
+      --text:#eef1f5; --text-dim:#a8b0bc; --text-faint:#6b7480; --text-placeholder:#4c5462;
+      --brand:#5c9bf7; --brand-strong:#7bacf8; --brand-weak:#182640; --on-brand:#0e1116;
+      --linear:#5c9bf7; --linear-soft:#182640;
+      --tactile:#f0873f; --tactile-soft:#3a2716;
+      --clicky:#f57b86; --clicky-soft:#3a1c20;
+      --hall:#4ad391; --hall-soft:#123326;
+      --good:#4ad391; --good-soft:#123326; --bad:#f57b86; --bad-soft:#3a1c20;
+      --shadow-1: 0 1px 2px rgba(0,0,0,.35);
+      --shadow-2: 0 4px 14px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+      --shadow-3: 0 16px 40px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.35);
+      --avatar-1:#5c9bf7; --avatar-1-soft:#182640;
+      --avatar-2:#f0873f; --avatar-2-soft:#3a2716;
+      --avatar-3:#f57b86; --avatar-3-soft:#3a1c20;
+      --avatar-4:#4ad391; --avatar-4-soft:#123326;
+      --avatar-5:#a78bfa; --avatar-5-soft:#241e3a;
+      --avatar-6:#a8b0bc; --avatar-6-soft:#232830;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1116; --surface:#171b21; --surface-2:#1c2028; --surface-3:#232830;
+    --border:#2b303a; --border-soft:#20242c; --border-strong:#3a414d;
+    --text:#eef1f5; --text-dim:#a8b0bc; --text-faint:#6b7480; --text-placeholder:#4c5462;
+    --brand:#5c9bf7; --brand-strong:#7bacf8; --brand-weak:#182640; --on-brand:#0e1116;
+    --linear:#5c9bf7; --linear-soft:#182640;
+    --tactile:#f0873f; --tactile-soft:#3a2716;
+    --clicky:#f57b86; --clicky-soft:#3a1c20;
+    --hall:#4ad391; --hall-soft:#123326;
+    --good:#4ad391; --good-soft:#123326; --bad:#f57b86; --bad-soft:#3a1c20;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.35);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+    --shadow-3: 0 16px 40px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.35);
+    --avatar-1:#5c9bf7; --avatar-1-soft:#182640;
+    --avatar-2:#f0873f; --avatar-2-soft:#3a2716;
+    --avatar-3:#f57b86; --avatar-3-soft:#3a1c20;
+    --avatar-4:#4ad391; --avatar-4-soft:#123326;
+    --avatar-5:#a78bfa; --avatar-5-soft:#241e3a;
+    --avatar-6:#a8b0bc; --avatar-6-soft:#232830;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  ::selection{background:var(--brand-weak); color:var(--brand-strong);}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Apple SD Gothic Neo", "Noto Sans KR", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings:'tnum' 1;
+    letter-spacing:-.005em;
+    padding:0 16px;
+    padding-block: 24px 40px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-variant-numeric: tabular-nums; font-feature-settings:'tnum' 1;}
+  .wrap{max-width:1180px; margin:0 auto;}
+  a{transition:color var(--dur-base) var(--ease);}
+  button, select, input{transition:background-color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);}
+  :focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:4px;}
+
+  /* ---------------- Avatar (switch/brand monogram — see design note) ---------------- */
+  .avatar{
+    display:inline-flex; align-items:center; justify-content:center; flex:none;
+    border-radius:var(--radius-xs); font-weight:700; letter-spacing:0; line-height:1;
+    background:var(--surface-3); color:var(--text-dim);
+  }
+  .avatar-sm{width:28px; height:28px; font-size:.68rem; border-radius:8px;}
+  .avatar-md{width:40px; height:40px; font-size:.85rem; border-radius:10px;}
+  .avatar-lg{width:52px; height:52px; font-size:1.05rem; border-radius:14px;}
+  .avatar.t1{background:var(--avatar-1-soft); color:var(--avatar-1);}
+  .avatar.t2{background:var(--avatar-2-soft); color:var(--avatar-2);}
+  .avatar.t3{background:var(--avatar-3-soft); color:var(--avatar-3);}
+  .avatar.t4{background:var(--avatar-4-soft); color:var(--avatar-4);}
+  .avatar.t5{background:var(--avatar-5-soft); color:var(--avatar-5);}
+  .avatar.t6{background:var(--avatar-6-soft); color:var(--avatar-6);}
+
+  header.top{
+    position:relative; display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between;
+    gap:20px; margin-bottom:20px; padding:28px 28px 26px; border-radius:var(--radius-lg);
+    background:var(--surface); border:1px solid var(--border-soft);
+  }
+  header.top .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.72rem; font-weight:700; letter-spacing:.02em; color:var(--brand);
+    background:var(--brand-weak); padding:4px 11px; border-radius:var(--radius-full); margin-bottom:13px;
+  }
+  header.top .titlebox{flex:1 1 340px; min-width:0;}
+  header.top h1{font-size:1.75rem; margin:0 0 8px; letter-spacing:-.02em; font-weight:700;}
+  header.top p{margin:0; color:var(--text-dim); font-size:.92rem; max-width:64ch; line-height:1.6;}
+  .stats{display:flex; gap:8px; flex-wrap:wrap; align-items:stretch;}
+  .stat-pill{
+    display:flex; flex-direction:column; gap:2px; font-size:.72rem; color:var(--text-faint); font-weight:500;
+    background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--radius-md);
+    padding:10px 16px; white-space:nowrap; min-width:104px;
+  }
+  .stat-pill b{font-size:1.05rem; font-weight:700; color:var(--text); letter-spacing:-.01em;}
+
+  nav.tabs{
+    display:flex; gap:22px; overflow-x:auto; margin-bottom:18px; padding:0 4px;
+    border-bottom:1px solid var(--border); scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    font-family:inherit; font-size:.88rem; font-weight:600; color:var(--text-faint);
+    background:none; border:none; padding:12px 2px; cursor:pointer; white-space:nowrap;
+    border-bottom:2.5px solid transparent; margin-bottom:-1px;
+  }
+  nav.tabs button.active{color:var(--text); border-bottom-color:var(--brand);}
+  nav.tabs button:not(.active):hover{color:var(--text-dim);}
+
+  .panel{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-lg);}
+  .view{display:none;}
+  .view.active{display:block; animation:fadeIn var(--dur-slow) var(--ease);}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:none;}}
+
+  .filters{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:14px 16px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .filters input[type="text"]{
+    flex:1 1 200px; min-width:160px; font:inherit; font-size:.88rem; padding:10px 14px;
+    border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text);
+  }
+  .filters input[type="text"]::placeholder{color:var(--text-placeholder);}
+  .filters input[type="text"]:focus{background:var(--surface); border:1.5px solid var(--brand); padding:9.5px 13.5px; outline:none;}
+  select{
+    font:inherit; font-size:.84rem; font-weight:500; padding:8px 12px; border:1px solid var(--border);
+    border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text); cursor:pointer;
+  }
+  select:hover{border-color:var(--border-strong);}
+  select:focus{background:var(--surface); border:1.5px solid var(--brand); outline:none;}
+  .type-toggle{display:flex; gap:6px;}
+  .type-toggle button{
+    font-family:inherit; font-size:.8rem; font-weight:600; padding:7px 14px; border-radius:var(--radius-full);
+    height:34px; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); cursor:pointer;
+  }
+  .type-toggle button:hover{border-color:var(--border-strong);}
+  .type-toggle button.on[data-t="리니어"]{background:var(--linear-soft); border-color:var(--linear-soft); color:var(--linear);}
+  .type-toggle button.on[data-t="택타일"]{background:var(--tactile-soft); border-color:var(--tactile-soft); color:var(--tactile);}
+  .type-toggle button.on[data-t="클릭"]{background:var(--clicky-soft); border-color:var(--clicky-soft); color:var(--clicky);}
+  .result-count{font-size:.78rem; color:var(--text-faint); margin-left:auto; white-space:nowrap; font-weight:500;}
+
+  table{width:100%; border-collapse:collapse; font-size:.85rem;}
+  thead th{
+    text-align:left; font-size:.71rem; letter-spacing:0; color:var(--text-faint);
+    font-weight:600; padding:12px 12px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; white-space:nowrap;
+    position:sticky; top:0; background:var(--surface);
+  }
+  thead th:hover{color:var(--text);}
+  thead th .arrow{opacity:.5; font-size:.7em;}
+  tbody tr{border-bottom:1px solid var(--border-soft); cursor:pointer;}
+  tbody tr:hover{background:var(--surface-2);}
+  tbody td{padding:10px 12px; vertical-align:top;}
+  .name-cell{display:flex; align-items:center; gap:10px;}
+  .name-cell .n{font-weight:600;}
+  .name-cell .b{display:block; font-size:.74rem; color:var(--text-faint); margin-top:2px; font-weight:400;}
+  .badge{
+    display:inline-flex; align-items:center; gap:5px; font-size:.72rem; font-weight:700; padding:3px 10px;
+    border-radius:var(--radius-xs); white-space:nowrap; height:22px; line-height:16px;
+  }
+  .badge.리니어{background:var(--linear-soft); color:var(--linear);}
+  .badge.택타일{background:var(--tactile-soft); color:var(--tactile);}
+  .badge.클릭{background:var(--clicky-soft); color:var(--clicky);}
+  .badge.기타, .badge.\?{background:var(--surface-3); color:var(--text-dim);}
+  .badge.홀이펙트{background:var(--hall-soft); color:var(--hall);}
+  .kr-badge{
+    display:inline-flex; align-items:center; gap:3px; font-size:.66rem; font-weight:700; padding:2px 7px;
+    border-radius:6px; margin-left:2px; white-space:nowrap; vertical-align:middle; letter-spacing:.01em;
+  }
+  .kr-badge.live{background:var(--good-soft); color:var(--good);}
+  .kr-badge.mention{background:var(--surface-3); color:var(--text-faint);}
+  .filters label.chk{display:flex; align-items:center; gap:6px; font-size:.82rem; color:var(--text-dim); cursor:pointer; white-space:nowrap; font-weight:500;}
+  .filters label.chk input{cursor:pointer; accent-color:var(--brand);}
+  .num{font-size:.82rem; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .mat{font-size:.76rem; color:var(--text-dim); white-space:nowrap;}
+  .rating{display:inline-flex; gap:3px; vertical-align:middle;}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--border); transition:background-color var(--dur-base) var(--ease);}
+  .dot.on{background:var(--brand);}
+  tr.detail-row{display:none;}
+  tr.detail-row.open{display:table-row;}
+  tr.detail-row td{background:var(--surface-2); padding:16px 20px; font-size:.86rem; line-height:1.65; color:var(--text);}
+  tr.detail-row .detail-head{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  tr.detail-row .meta-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-bottom:12px; font-size:.78rem;}
+  tr.detail-row .meta-grid div{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:8px 11px;}
+  tr.detail-row .meta-grid div span{display:block; color:var(--text-faint); font-size:.68rem; letter-spacing:.02em; margin-bottom:2px;}
+
+  .pager{display:flex; justify-content:center; align-items:center; gap:12px; padding:16px; font-size:.82rem; color:var(--text-dim); border-top:1px solid var(--border-soft);}
+  .pager button{
+    font:inherit; font-weight:600; padding:7px 15px; border-radius:var(--radius-sm); border:none; background:var(--surface-3);
+    color:var(--text); cursor:pointer; height:36px;
+  }
+  .pager button:not(:disabled):hover{background:var(--border);}
+  .pager button:disabled{opacity:.3; cursor:default;}
+
+  .table-scroll{overflow-x:auto;}
+
+  /* Recommend view */
+  .rec-form{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px; padding:20px; border-bottom:1px solid var(--border-soft);}
+  .rec-field label{display:block; font-size:.78rem; font-weight:600; color:var(--text-dim); margin-bottom:7px;}
+  .rec-field select, .rec-field input[type=range]{width:100%;}
+  .rec-field select{background:var(--surface-2);}
+  .rec-field input[type=range]{accent-color:var(--brand);}
+  .rec-field .hint{font-size:.72rem; color:var(--text-faint); margin-top:5px;}
+  .range-val{font-size:.78rem; font-weight:600; color:var(--brand);}
+  .rec-results{padding:18px;}
+  .rec-card{
+    display:flex; gap:14px; border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:15px 17px; margin-bottom:10px; background:var(--surface);
+    transition:border-color var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease);
+  }
+  .rec-card:hover{background:var(--surface-2);}
+  .rec-card .rec-body{flex:1; min-width:0;}
+  .rec-card .top-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .rec-card .score{font-size:.78rem; font-weight:700; color:var(--brand); background:var(--brand-weak); padding:3px 10px; border-radius:var(--radius-full);}
+  .rec-card .why{font-size:.8rem; color:var(--text-dim); margin-top:7px;}
+  .rec-card .desc{font-size:.82rem; margin-top:9px; line-height:1.6; color:var(--text-dim);}
+
+  /* simple content views (franken/stab/lube/materials/brand/refs) */
+  .card-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; padding:20px;}
+  .card{
+    border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:16px 18px; background:var(--surface);
+    transition:background-color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
+  }
+  .card:hover{background:var(--surface-2);}
+  .card .card-head{display:flex; align-items:center; gap:11px; margin-bottom:2px;}
+  .card h3{margin:0 0 8px; font-size:1rem; letter-spacing:-.01em; font-weight:700;}
+  .card .card-head h3{margin:0;}
+  .card .tag{font-size:.71rem; font-weight:700; color:var(--brand); background:var(--brand-weak); padding:3px 9px; border-radius:var(--radius-xs); margin-right:6px;}
+  .card p{font-size:.83rem; line-height:1.65; color:var(--text-dim); margin:9px 0 0;}
+  .card .specs{font-size:.78rem; color:var(--text-dim); margin-top:7px; padding-top:7px; border-top:1px solid var(--border-soft);}
+  .card .specs:first-of-type{border-top:none; padding-top:0;}
+  .card .specs b{color:var(--text); font-weight:600;}
+
+  .tips-box{margin:0 20px 4px; border:1px solid var(--border-soft); border-radius:var(--radius-md); background:var(--surface); overflow:hidden;}
+  .tips-box summary{cursor:pointer; list-style:none; padding:13px 18px; font-size:.86rem; font-weight:700; color:var(--brand); display:flex; align-items:center; gap:6px;}
+  .tips-box summary::-webkit-details-marker{display:none;}
+  .tips-box summary::before{content:'💡'; font-size:.9em;}
+  .tips-box[open] summary{border-bottom:1px solid var(--border-soft);}
+  .tips-body{padding:4px 18px 16px;}
+  .tips-body h4{margin:14px 0 4px; font-size:.82rem; font-weight:700; color:var(--text);}
+  .tips-body h4:first-child{margin-top:10px;}
+  .tips-body p{font-size:.82rem; line-height:1.7; color:var(--text-dim); margin:0;}
+  .tips-note{margin:0 20px 4px; font-size:.78rem; line-height:1.6; color:var(--text-faint); padding:12px 16px; background:var(--surface-2); border-radius:var(--radius-sm);}
+
+  .table-wrap{margin:0 20px 14px; border:1px solid var(--border-soft); border-radius:var(--radius-md); overflow-x:auto; background:var(--surface);}
+  table.cmp-table{width:100%; border-collapse:collapse; font-size:.8rem; white-space:nowrap;}
+  table.cmp-table th, table.cmp-table td{padding:10px 14px; text-align:left; border-bottom:1px solid var(--border-soft);}
+  table.cmp-table th{color:var(--text-faint); font-weight:600; font-size:.72rem; background:var(--surface-2); position:sticky; top:0;}
+  table.cmp-table td{color:var(--text-dim); white-space:normal;}
+  table.cmp-table td.cell-material{color:var(--text); font-weight:700; white-space:nowrap;}
+  table.cmp-table tr:last-child td{border-bottom:none;}
+  table.cmp-table td.cell-rank{color:var(--brand); font-weight:700; text-align:center; white-space:nowrap;}
+
+  .brand-more{margin-top:8px; font-size:.78rem; color:var(--brand); cursor:pointer; font-weight:600;}
+  .brand-detail{font-size:.82rem; line-height:1.7; color:var(--text-dim); margin-top:8px; padding-top:8px; border-top:1px solid var(--border-soft); white-space:pre-line;}
+
+  .prose{padding:24px 26px; font-size:.9rem; line-height:1.75;}
+  .prose h2{font-size:1.1rem; margin:26px 0 10px; letter-spacing:-.01em; font-weight:700; padding-bottom:8px; border-bottom:1px solid var(--border-soft);}
+  .prose h2:first-child{margin-top:0;}
+  .prose .legend-item{margin-bottom:11px; padding-left:14px; border-left:2px solid var(--border);}
+  .prose .legend-item b{color:var(--brand);}
+  .prose a{color:var(--brand);}
+  .source-list{list-style:none; padding:0; margin:0;}
+  .source-list li{padding:12px 0; border-bottom:1px solid var(--border-soft);}
+  .source-list li:last-child{border-bottom:none;}
+  .source-list a{font-weight:600;}
+  .source-list .note{display:block; font-size:.8rem; color:var(--text-dim); margin-top:4px; line-height:1.55;}
+
+  footer{text-align:center; font-size:.75rem; color:var(--text-faint); padding:26px 0 4px;}
+
+  @media (max-width:640px){
+    header.top{padding:20px;}
+    header.top h1{font-size:1.5rem;}
+    thead th:nth-child(n+7), tbody td:nth-child(n+7){display:none;}
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="titlebox">
+      <span class="eyebrow">Custom Switch Database</span>
+      <h1>스위치 아카이브</h1>
+      <p>커스텀 키보드 스위치 <span class="mono" id="totalCount">358</span>종의 소재·스펙·타건 특성을 정리한 데이터베이스. 모든 별점(접점부·워블·서걱임)은 문서 내에서 <b>체리 MX Black을 기준점</b>으로 매겨졌습니다. <span class="kr-badge live">KR</span> 배지는 국내 벤더 판매가 확인/언급된 항목입니다.</p>
+    </div>
+    <div class="stats">
+      <span class="stat-pill"><b id="totalCount2">0</b>스위치 등록</span>
+      <span class="stat-pill" id="brandCountWrap"><b id="brandCount">0</b>브랜드/파운드리</span>
+      <span class="stat-pill" id="krCountWrap"><b id="krCount">0</b>국내 관련 정보</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-view="db" class="active">스위치 DB</button>
+    <button data-view="recommend">추천 도우미</button>
+    <button data-view="franken">프랑켄 스위치</button>
+    <button data-view="stab">스테빌라이저</button>
+    <button data-view="lube">윤활제</button>
+    <button data-view="materials">소재별 특성</button>
+    <button data-view="brands">제조사 소개</button>
+    <button data-view="krvendors">국내 벤더</button>
+    <button data-view="about">용어·출처</button>
+  </nav>
+
+  <!-- DB VIEW -->
+  <section class="view active panel" id="view-db">
+    <div class="filters">
+      <input type="text" id="search" placeholder="이름·설명 검색 (예: 홀리판다, 저소음, 로우피치)">
+      <select id="brandFilter"><option value="">전체 브랜드</option></select>
+      <div class="type-toggle" id="typeToggle">
+        <button data-t="리니어">리니어</button>
+        <button data-t="택타일">택타일</button>
+        <button data-t="클릭">클릭</button>
+      </div>
+      <select id="sortSel">
+        <option value="name">이름순</option>
+        <option value="brand">브랜드순</option>
+        <option value="bottom">바닥압 낮은순</option>
+        <option value="bottomDesc">바닥압 높은순</option>
+        <option value="smooth">매끄러움순(서걱임 적은순)</option>
+        <option value="stable">안정성순(워블 적은순)</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="krOnly"> 국내 판매 확인/언급만</label>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th data-k="brand">브랜드</th>
+            <th data-k="name">스위치명</th>
+            <th data-k="type">타입</th>
+            <th data-k="force">키압(입력/바닥, gf)</th>
+            <th data-k="mat">소재(상-하-스템)</th>
+            <th data-k="travel">트레블(총/입력, mm)</th>
+            <th data-k="pitch">피치</th>
+            <th data-k="ratings">평점</th>
+          </tr>
+        </thead>
+        <tbody id="dbBody"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <button id="prevPage">← 이전</button>
+      <span id="pageInfo" class="mono"></span>
+      <button id="nextPage">다음 →</button>
+    </div>
+  </section>
+
+  <!-- RECOMMEND VIEW -->
+  <section class="view panel" id="view-recommend">
+    <div class="rec-form">
+      <div class="rec-field">
+        <label>스위치 타입</label>
+        <select id="recType">
+          <option value="">상관없음</option>
+          <option value="리니어">리니어</option>
+          <option value="택타일">택타일</option>
+          <option value="클릭">클릭</option>
+        </select>
+      </div>
+      <div class="rec-field">
+        <label>선호 바닥압: <span class="range-val" id="recForceLabel">~65gf 이하</span></label>
+        <input type="range" id="recForce" min="35" max="90" value="65" step="5">
+        <div class="hint">낮을수록 가볍게, 높을수록 묵직하게 느껴집니다</div>
+      </div>
+      <div class="rec-field">
+        <label>정숙성 중요도</label>
+        <select id="recQuiet">
+          <option value="0">상관없음</option>
+          <option value="1">조용한 편 선호</option>
+          <option value="2">최대한 조용하게 (저소음/실사 우선)</option>
+        </select>
+      </div>
+      <div class="rec-field">
+        <label>매끄러움(서걱임 없음) 중요도</label>
+        <select id="recSmooth">
+          <option value="0">상관없음</option>
+          <option value="1">중요</option>
+          <option value="2">매우 중요</option>
+        </select>
+      </div>
+      <div class="rec-field">
+        <label>선호 브랜드(선택)</label>
+        <select id="recBrand"><option value="">상관없음</option></select>
+      </div>
+      <div class="rec-field">
+        <label class="chk" style="margin-top:26px;"><input type="checkbox" id="recKrOnly"> 국내 구매 확인/언급된 것만</label>
+      </div>
+    </div>
+    <div class="rec-results" id="recResults"></div>
+  </section>
+
+  <!-- FRANKEN -->
+  <section class="view panel" id="view-franken">
+    <div class="prose"><h2>프랑켄 스위치 (Franken Switch)</h2><p style="color:var(--text-dim); font-size:.85rem;">서로 다른 제조사의 상부/하부 하우징과 스템을 조합해 만든, 커뮤니티에서 검증된 조합축입니다.</p></div>
+    <div class="card-grid" id="frankenGrid"></div>
+  </section>
+
+  <!-- STAB -->
+  <section class="view panel" id="view-stab">
+    <div class="prose"><h2>스테빌라이저</h2><p style="color:var(--text-dim); font-size:.85rem;">기계식키보드 마이너 갤러리의 구매평·강좌글을 참고해 정리했습니다. 실제 체감은 개체차·튜닝 숙련도에 따라 달라질 수 있습니다.</p></div>
+    <details class="tips-box">
+      <summary>스테빌라이저 설치·튜닝 팁 보기</summary>
+      <div class="tips-body">
+        <h4>마운트 방식부터 확인하세요</h4>
+        <p>스테빌라이저는 크게 <b>보강용(플레이트 마운트)</b>과 <b>무보강용(PCB 마운트)</b>으로 나뉘고, 무보강용은 다시 <b>스냅인</b>(끼워서 고정)과 <b>스크류인</b>(나사로 고정)으로 나뉩니다. 최신 커스텀 기판 대부분은 스크류인을 채택하지만, 구매 전 반드시 자신의 기판 마운트 규격을 확인해야 합니다. 롱폴스템 전용, 1.2t PCB 전용 등 두께·규격이 다른 변형도 있습니다.</p>
+        <h4>철심(와이어) 수평 맞추기 — 가장 중요한 튜닝</h4>
+        <p>스테빌라이저 잡소리의 상당수는 철심이 좌우로 수평이 맞지 않아 발생합니다. 장착 전 철심을 평평한 바닥에 대고 눌러 휘어진 부분을 펴주는 "철심 수평 맞추기"가 커뮤니티에서 가장 강조되는 단일 튜닝 스킬로 꼽힙니다.</p>
+        <h4>그 외 대표적인 튜닝 기법</h4>
+        <p>발톱제거(하우징 내부 돌기를 제거해 유격을 줄이는 방식), 와이어 테이핑(철심에 테이프를 감아 유격을 채우는 방식), 홀리 모드/밴드에이드 모드(하우징에 패드를 덧대 소리를 죽이는 방식), 와이어 디버링(철심 표면의 거스러미 제거), PCB/플레이트 테이핑(기판 자체의 공명을 줄이는 방식) 등이 자주 언급됩니다. 하우징 소재는 이중사출(듀얼샷)과 막(단일)사출로 나뉘며, 이중사출 쪽이 대체로 바닥 소리가 더 청명하다는 평가를 받습니다.</p>
+        <h4>윤활 시 주의</h4>
+        <p>스테빌라이저 윤활은 스위치보다 그리스를 넉넉히 발라도 무방한 편이지만, 하우징 소재가 실리콘인 제품(예: 스웨그키 나이트)에는 반응성이 있는 퍼마텍스 계열 그리스를 피하고 크라이톡스 205 계열처럼 검증된 윤활제를 사용하는 것이 안전합니다.</p>
+      </div>
+    </details>
+    <div class="card-grid" id="stabGrid"></div>
+  </section>
+
+  <!-- LUBE -->
+  <section class="view panel" id="view-lube">
+    <div class="prose"><h2>윤활제</h2><p style="color:var(--text-dim); font-size:.85rem;">국내외 커뮤니티·판매처 정보를 참고해 정리했습니다.</p></div>
+    <details class="tips-box">
+      <summary>윤활제 도포 팁 보기</summary>
+      <div class="tips-body">
+        <h4>필요한 도구</h4>
+        <p>스위치 오프너와 스템 홀더가 있으면 작업 시간을 크게 줄일 수 있습니다. 여기에 세필붓(0~00호), 스위치 풀러, 키캡 리무버 정도면 충분합니다.</p>
+        <h4>분해 순서</h4>
+        <p>키캡 리무버로 키캡을 제거 → 스위치 풀러로 기판에서 스위치 분리 → 스위치 오프너로 상부 하우징·스템·스프링·하부 하우징 4파트로 분해하는 순서가 일반적입니다.</p>
+        <h4>스프링 윤활 — "백 루빙(bag-lubing)"</h4>
+        <p>지퍼백에 스프링을 모두 넣고 오일형 윤활제를 3~4방울 떨어뜨린 뒤 흔들어주면, 개별 도포보다 훨씬 빠르고 균일하게 스프링 전체를 윤활할 수 있습니다.</p>
+        <h4>스템·하우징 레일 윤활</h4>
+        <p>붓에 윤활제를 아주 소량만 묻혀 하부 하우징의 레일과 리프, 스템의 4개 면(다리 포함)에 얇고 고르게 펴 바릅니다. 접점부(금속 리프)와, 택타일 스위치의 구분감을 만드는 돌기 부분에는 절대 윤활제가 닿지 않도록 주의해야 합니다.</p>
+        <h4>과다 윤활 주의</h4>
+        <p>윤활제는 나중에 추가하는 것이 덜어내는 것보다 훨씬 쉽습니다. 한 번에 두껍게 바르면 흰색 뭉침이 생기고 키감이 먹먹해지는 "과윤활" 상태가 되므로, 얇게 여러 번 나눠 바르는 편이 안전합니다.</p>
+        <h4>제형 선택 기준</h4>
+        <p>리니어 스위치는 매끄러움을 살리는 크라이톡스 205g0·트리보시스 3204 같은 중간 점도 그리스가, 택타일·클리키 스위치는 구분감·클릭 소리를 보존하려면 더 묽은 트리보시스 3203이나 아예 그리스가 아닌 RO-59·Dri-Kote 같은 건식(PTFE 분말) 윤활제가 대안으로 언급됩니다.</p>
+      </div>
+    </details>
+    <div class="card-grid" id="lubeGrid"></div>
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="view panel" id="view-materials">
+    <div class="prose"><h2>소재별 특성</h2><p style="color:var(--text-dim); font-size:.85rem;">이 데이터베이스에 수록된 413종 스위치의 상부/하부 하우징·스템 소재를 실제로 집계해 비교한 표입니다. 마찰계수가 낮을수록(표의 위쪽일수록) 더 매끄러운 순정 촉감을 기대할 수 있습니다. 참고용이며, 배합/가공 숙련도에 따라 실제 체감은 달라질 수 있습니다.</p></div>
+    <div class="table-wrap">
+      <table class="cmp-table" id="materialsCompareTable"></table>
+    </div>
+    <p id="materialsOtherNote" class="tips-note"></p>
+    <div class="card-grid" id="materialsGrid"></div>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="view panel" id="view-brands">
+    <div class="prose"><h2>제조사 / 파운드리 소개</h2></div>
+    <div class="card-grid" id="brandsGrid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr));"></div>
+  </section>
+
+  <!-- KR VENDORS -->
+  <section class="view panel" id="view-krvendors">
+    <div class="prose"><h2>국내 벤더 디렉토리</h2><p style="color:var(--text-dim); font-size:.85rem;">국내 커스텀 키보드 커뮤니티(아카라이브, 기계식키보드 마이너 갤러리 등)에 정리된 정보를 바탕으로 조사한 주요 판매처입니다. 2026년 9월 기준이며, 실제 재고/가격은 각 사이트에서 확인하세요.</p></div>
+    <div class="card-grid" id="krVendorGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="view panel" id="view-about">
+    <div class="prose">
+      <h2>평점·용어 설명</h2>
+      <div class="legend-item"><b>키압 (입력압/바닥압, gf)</b> — 입력압은 입력이 인식되는 시점의 압력, 바닥압은 끝까지 눌렸을 때의 압력. 같은 바닥압이라도 초기압이 다르면 체감 키압은 달라질 수 있습니다.</div>
+      <div class="legend-item"><b>총 이동거리 / 입력 이동거리</b> — 기본값은 4mm/2mm. 총 이동거리가 4mm보다 짧으면 스템폴이 바닥을 치는 '바치리'일 수 있습니다(단, 항상 그런 것은 아님).</div>
+      <div class="legend-item"><b>접점부</b> — 접점부 소음에 대한 주관적 평가. 체리 스위치가 가장 우수하다고 여겨지며, <b>별점이 낮을수록 접점부 잡소리가 많다</b>는 의미입니다.</div>
+      <div class="legend-item"><b>스템 워블</b> — 스템을 흔들었을 때 흔들리는 정도. <b>5점 = 매우 적음(우수)</b>.</div>
+      <div class="legend-item"><b>서걱임 (공윤 기준)</b> — 공장윤활 상태에서의 서걱임. <b>5점 = 서걱임 없음(매끄러움)</b>.</div>
+      <div class="legend-item"><b>걸림 D형/P형</b> — 택타일의 걸림 형태. P형은 뾰족하고 짧게, D형은 둥글고 길게 걸리는 느낌.</div>
+      <div class="legend-item"><b>피치 / 볼륨</b> — 서로 다른 개념입니다. 피치는 소리의 높낮이, 볼륨은 소리의 크기(시끄러움 정도). 하이피치+저볼륨, 로우피치+고볼륨 조합도 존재합니다.</div>
+      <div class="legend-item"><b>기준점</b> — 문서 내 모든 별점(접점부·워블·서걱임·볼륨)은 <b>체리 MX Black(삼신흑)을 기준</b>으로 매겨졌습니다.</div>
+      <h2>KR(국내 판매) 배지 안내</h2>
+      <div class="legend-item"><b style="color:var(--good);">확인됨</b> — 2026년 9월 기준 스웨그키·TX Keyboard 등 국내 벤더 사이트를 직접 열어 실시간 판매 중임을 확인한 항목. 개당 가격을 함께 표기했습니다.</div>
+      <div class="legend-item"><b>언급됨</b> — 원본 위키 문서 자체에 지온웍스·스웨그키·키네틱스·SPM 등 국내 벤더명이 특주처/판매처로 언급되어 있는 항목(실시간 재고는 별도 확인 필요).</div>
+      <div class="legend-item">배지가 없다고 해서 국내에서 못 구하는 것은 아닙니다 — 이번 조사에서 국내 판매 정보를 확인하지 못했을 뿐이며, 특히 네이버 스마트스토어 기반 벤더(지온웍스·키네틱스·너굴웍스 등)는 접근 제한으로 실시간 카탈로그 전수 확인은 하지 못했습니다.</div>
+      <h2>스위치 옆 아이콘 안내</h2>
+      <div class="legend-item">이름 옆의 색상 원형 아이콘은 <b>실제 제품 사진이 아닌 식별용 모노그램</b>입니다. 이 페이지는 외부 이미지를 불러오지 않고 완전히 자체 완결적으로 동작하도록 발행되어, 413종 각각의 정품 사진을 안정적으로 표시할 방법이 없었습니다(제조사별 이미지를 낱개로 다운로드해 파일에 내장하는 방법도 검토했지만 용량 제한과 저작권 문제로 제외했습니다).</div>
+      <div class="legend-item">대신 스위치 DB·추천 도우미에서는 <b>타입별 색상</b>(리니어=파랑, 택타일=주황, 클릭=빨강, 홀이펙트=초록)으로, 프랑켄·스테빌라이저·윤활제·제조사·국내 벤더 카드에서는 <b>이름 기반 색상</b>으로 아이콘을 구분해 최소한의 시각적 단서를 제공합니다.</div>
+      <h2>데이터 출처</h2>
+      <ul class="source-list" id="sourceList"></ul>
+    </div>
+  </section>
+
+  <footer>스위치 아카이브 · 커뮤니티 위키 데이터를 정리한 비공식 참고 자료입니다. 최신 정보는 원본 출처를 확인하세요.</footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  const DB = window.SWITCH_DB;
+  const switches = DB.switches;
+  buildAliasRanks(switches);
+
+  // ---------- helpers ----------
+  function num(v){ const n = parseFloat(v); return isNaN(n) ? null : n; }
+  function esc(s){ return (s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+  function typeClass(t){
+    if(!t) return '기타';
+    if(t.indexOf('리니어')>=0) return '리니어';
+    if(t.indexOf('택타일')>=0) return '택타일';
+    if(t.indexOf('클릭')>=0) return '클릭';
+    return '기타';
+  }
+  function ratingDots(v){
+    const n = num(v);
+    if(n===null) return '<span class="mono" style="color:var(--text-faint)">–</span>';
+    let out = '<span class="rating">';
+    for(let i=1;i<=5;i++){ out += `<span class="dot${i<=n?' on':''}"></span>`; }
+    out += '</span>';
+    return out;
+  }
+
+  // ---------- avatar (monogram icon in place of product photos — see 용어·출처 tab) ----------
+  function initials(str){
+    if(!str) return '?';
+    let s = String(str).replace(/\([^)]*\)/g,'').trim(); // drop parenthetical Korean/alt names, e.g. "Cherry (체리)"
+    if(!s) s = String(str).trim();
+    if(!s) return '?';
+    const first = s.charAt(0);
+    if(/[가-힣]/.test(first)) return first; // one Hangul syllable already reads as a full glyph
+    const words = s.split(/[\s\-_/]+/).filter(w => /[A-Za-z0-9가-힣]/.test(w));
+    if(words.length>=2) return (words[0].charAt(0)+words[1].charAt(0)).toUpperCase();
+    return s.replace(/[^A-Za-z0-9가-힣]/g,'').slice(0,2).toUpperCase() || '?';
+  }
+  function typeTone(tc){
+    return tc==='리니어' ? 't1' : tc==='택타일' ? 't2' : tc==='클릭' ? 't3' : tc==='홀이펙트' ? 't4' : 't6';
+  }
+  function hashTone(str){
+    const s = String(str||'');
+    let h = 0;
+    for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+    return ['t1','t2','t3','t4','t5','t6'][h % 6];
+  }
+  function avatar(text, tone, size){
+    return `<span class="avatar ${size} ${tone}">${esc(initials(text))}</span>`;
+  }
+
+  // 같은 모노그램(별칭)을 쓰는 스위치가 여럿이면, 전체 업로드 스위치 기준으로
+  // 이름 내림차순 정렬 후 그룹 내 순번을 매겨 아바타에 글자 대신 번호를 표기한다.
+  function buildAliasRanks(list){
+    const groups = {};
+    list.forEach(s => {
+      const key = initials(s.name);
+      (groups[key] = groups[key] || []).push(s);
+    });
+    Object.values(groups).forEach(group => {
+      if(group.length <= 1) return;
+      group.sort((a,b) => b.name.localeCompare(a.name, 'ko')); // 이름 내림차순
+      group.forEach((s,i) => { s.__aliasNum = i+1; });
+    });
+  }
+  function switchAvatar(s, tone, size){
+    const label = s.__aliasNum ? String(s.__aliasNum) : initials(s.name);
+    return `<span class="avatar ${size} ${tone}" title="${s.__aliasNum?'별칭 중복 순번 '+s.__aliasNum+' · ':''}${esc(s.name)}">${esc(label)}</span>`;
+  }
+
+  // ---------- populate filter selects ----------
+  const brandSet = Array.from(new Set(switches.map(s=>s.brand))).sort((a,b)=>a.localeCompare(b,'ko'));
+  document.getElementById('brandCount').textContent = brandSet.length;
+  document.getElementById('totalCount').textContent = switches.length;
+  document.getElementById('totalCount2').textContent = switches.length;
+  document.getElementById('krCount').textContent = switches.filter(s=>s.kr_available).length;
+  const brandFilter = document.getElementById('brandFilter');
+  const recBrand = document.getElementById('recBrand');
+  brandSet.forEach(b=>{
+    const o1=document.createElement('option'); o1.value=b; o1.textContent=b; brandFilter.appendChild(o1);
+    const o2=document.createElement('option'); o2.value=b; o2.textContent=b; recBrand.appendChild(o2);
+  });
+
+  // ---------- DB VIEW state ----------
+  let state = { search:'', brand:'', types:new Set(), sort:'name', page:0, pageSize:30, krOnly:false };
+
+  function applyFilter(){
+    const q = state.search.trim().toLowerCase();
+    let rows = switches.filter(s=>{
+      if(state.brand && s.brand!==state.brand) return false;
+      if(state.types.size>0 && !state.types.has(typeClass(s.type))) return false;
+      if(state.krOnly && !s.kr_available) return false;
+      if(q){
+        const hay = (s.name+' '+s.brand+' '+s.description).toLowerCase();
+        if(hay.indexOf(q)===-1) return false;
+      }
+      return true;
+    });
+    rows = rows.slice();
+    switch(state.sort){
+      case 'brand': rows.sort((a,b)=>a.brand.localeCompare(b.brand,'ko') || a.name.localeCompare(b.name,'ko')); break;
+      case 'bottom': rows.sort((a,b)=>(num(a.bottom_out_force_gf)??999)-(num(b.bottom_out_force_gf)??999)); break;
+      case 'bottomDesc': rows.sort((a,b)=>(num(b.bottom_out_force_gf)??-1)-(num(a.bottom_out_force_gf)??-1)); break;
+      case 'smooth': rows.sort((a,b)=>(num(b.scratchiness_rating)??-1)-(num(a.scratchiness_rating)??-1)); break;
+      case 'stable': rows.sort((a,b)=>(num(b.wobble_rating)??-1)-(num(a.wobble_rating)??-1)); break;
+      default: rows.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+    }
+    return rows;
+  }
+
+  function renderDb(){
+    const rows = applyFilter();
+    const totalPages = Math.max(1, Math.ceil(rows.length/state.pageSize));
+    state.page = Math.min(state.page, totalPages-1);
+    const pageRows = rows.slice(state.page*state.pageSize, (state.page+1)*state.pageSize);
+    document.getElementById('resultCount').textContent = rows.length + '개 결과';
+    document.getElementById('pageInfo').textContent = `${state.page+1} / ${totalPages}`;
+    document.getElementById('prevPage').disabled = state.page<=0;
+    document.getElementById('nextPage').disabled = state.page>=totalPages-1;
+
+    const tbody = document.getElementById('dbBody');
+    tbody.innerHTML = '';
+    pageRows.forEach((s, idx)=>{
+      const tc = typeClass(s.type);
+      const krBadge = s.kr_available
+        ? `<span class="kr-badge ${s.kr_available.startsWith('확인')?'live':'mention'}" title="${esc(s.kr_available)}${s.kr_vendor_hint?' · '+esc(s.kr_vendor_hint):''}">KR</span>`
+        : '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="mat">${esc(s.brand)}</td>
+        <td class="name-cell">
+          ${switchAvatar(s, typeTone(tc), 'avatar-sm')}
+          <div style="min-width:0;">
+            <span class="n">${esc(s.name)}${krBadge}</span>
+            ${s.commissioner?`<span class="b">특주: ${esc(s.commissioner)}</span>`:''}
+          </div>
+        </td>
+        <td><span class="badge ${tc}">${esc(s.type||'?')}</span></td>
+        <td class="num">${s.actuation_force_gf||'?'} / ${s.bottom_out_force_gf||'?'}</td>
+        <td class="mat">${[s.material_top,s.material_bottom,s.material_stem].filter(Boolean).join(' - ')||'–'}</td>
+        <td class="num">${s.total_travel_mm||'?'} / ${s.pretravel_mm||'?'}</td>
+        <td class="mat">${esc(s.pitch)||'–'}</td>
+        <td>${ratingDots(s.contact_rating)}</td>
+      `;
+      const detail = document.createElement('tr');
+      detail.className = 'detail-row';
+      detail.innerHTML = `<td colspan="8">
+        <div class="detail-head">
+          ${switchAvatar(s, typeTone(tc), 'avatar-lg')}
+          <div>
+            <div style="font-weight:700; font-size:1rem;">${esc(s.name)}</div>
+            <div style="font-size:.8rem; color:var(--text-faint); margin-top:2px;">${esc(s.brand)}${s.commissioner?` · 특주: ${esc(s.commissioner)}`:''}</div>
+          </div>
+        </div>
+        <div class="meta-grid">
+          <div><span>Pin 수</span>${esc(s.pin_count)||'–'}</div>
+          <div><span>필름 필요</span>${esc(s.film_needed)||'–'}</div>
+          <div><span>스템 워블</span>${ratingDots(s.wobble_rating)}</div>
+          <div><span>서걱임(매끄러움)</span>${ratingDots(s.scratchiness_rating)}</div>
+          <div><span>걸림(택타일)</span>${esc(s.bump_type)||'–'}</div>
+          <div><span>볼륨</span>${ratingDots(s.volume_rating)}</div>
+          <div><span>무윤활 버전</span>${esc(s.no_lube_version)||'–'}</div>
+          <div><span>스프링</span>${esc(s.spring)||'–'}</div>
+        </div>
+        ${s.kr_available ? `<div style="margin-bottom:10px; padding:9px 13px; border-radius:10px; background:var(--brand-weak); font-size:.8rem;">
+          <b style="color:var(--brand);">국내 판매 정보</b> — ${esc(s.kr_available)}
+          ${s.kr_vendor_hint?` · 벤더: ${esc(s.kr_vendor_hint)}`:''}
+          ${s.kr_price_krw?` · 가격: ${esc(s.kr_price_krw)}`:''}
+          ${s.kr_note?`<br>${esc(s.kr_note)}`:''}
+        </div>` : ''}
+        <div>${esc(s.description)||'등록된 상세 설명이 없습니다.'}</div>
+      </td>`;
+      tr.addEventListener('click', ()=> detail.classList.toggle('open'));
+      tbody.appendChild(tr);
+      tbody.appendChild(detail);
+    });
+  }
+
+  document.getElementById('search').addEventListener('input', e=>{ state.search=e.target.value; state.page=0; renderDb(); });
+  document.getElementById('brandFilter').addEventListener('change', e=>{ state.brand=e.target.value; state.page=0; renderDb(); });
+  document.getElementById('sortSel').addEventListener('change', e=>{ state.sort=e.target.value; renderDb(); });
+  document.getElementById('krOnly').addEventListener('change', e=>{ state.krOnly=e.target.checked; state.page=0; renderDb(); });
+  document.getElementById('prevPage').addEventListener('click', ()=>{ state.page=Math.max(0,state.page-1); renderDb(); });
+  document.getElementById('nextPage').addEventListener('click', ()=>{ state.page++; renderDb(); });
+  document.querySelectorAll('#typeToggle button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const t = btn.dataset.t;
+      if(state.types.has(t)){ state.types.delete(t); btn.classList.remove('on'); }
+      else { state.types.add(t); btn.classList.add('on'); }
+      state.page = 0;
+      renderDb();
+    });
+  });
+  document.querySelectorAll('thead th[data-k]').forEach(th=>{
+    th.addEventListener('click', ()=>{
+      const map = {brand:'brand', name:'name', force:'bottom', mat:null, travel:null, pitch:null, ratings:null};
+      const k = map[th.dataset.k];
+      if(k){ state.sort = state.sort===k ? (k+'Desc') : k; document.getElementById('sortSel').value = state.sort in {name:1,brand:1,bottom:1,bottomDesc:1,smooth:1,stable:1} ? state.sort : 'name'; renderDb(); }
+    });
+  });
+
+  // ---------- RECOMMEND VIEW ----------
+  const recForce = document.getElementById('recForce');
+  const recForceLabel = document.getElementById('recForceLabel');
+  function updateForceLabel(){ recForceLabel.textContent = '~' + recForce.value + 'gf 이하'; }
+  recForce.addEventListener('input', ()=>{ updateForceLabel(); renderRecommend(); });
+  updateForceLabel();
+
+  function renderRecommend(){
+    const type = document.getElementById('recType').value;
+    const maxForce = parseFloat(recForce.value);
+    const quiet = parseInt(document.getElementById('recQuiet').value);
+    const smooth = parseInt(document.getElementById('recSmooth').value);
+    const brand = document.getElementById('recBrand').value;
+
+    const krOnly = document.getElementById('recKrOnly').checked;
+    let candidates = switches.filter(s=>{
+      if(type && typeClass(s.type)!==type) return false;
+      if(brand && s.brand!==brand) return false;
+      if(krOnly && !s.kr_available) return false;
+      const bo = num(s.bottom_out_force_gf);
+      if(bo!==null && bo > maxForce+8) return false;
+      return true;
+    });
+
+    candidates.forEach(s=>{
+      let score = 0;
+      const bo = num(s.bottom_out_force_gf);
+      if(bo!==null) score += Math.max(0, 10 - Math.abs(bo-maxForce)/3);
+      const smoothVal = num(s.scratchiness_rating);
+      if(smoothVal!==null) score += smoothVal * (1 + smooth*0.8);
+      const wobbleVal = num(s.wobble_rating);
+      if(wobbleVal!==null) score += wobbleVal * 0.6;
+      const contactVal = num(s.contact_rating);
+      if(contactVal!==null) score += contactVal * 0.5;
+      if(quiet>0){
+        const vol = num(s.volume_rating);
+        const isSilent = /저소음|실사|silent/i.test(s.name) || /저소음/.test(s.description||'');
+        if(isSilent) score += quiet * 6;
+        if(vol!==null) score += (5-vol) * quiet * 1.2;
+      }
+      s.__score = score;
+    });
+    candidates.sort((a,b)=>b.__score - a.__score);
+    const top = candidates.slice(0,12);
+
+    const box = document.getElementById('recResults');
+    if(top.length===0){ box.innerHTML = '<p style="padding:0 0 18px;color:var(--text-dim);">조건에 맞는 스위치를 찾지 못했습니다. 조건을 완화해보세요.</p>'; return; }
+    box.innerHTML = top.map((s,i)=>{
+      const tc = typeClass(s.type);
+      const why = [];
+      if(num(s.bottom_out_force_gf)!==null) why.push(`바닥압 ${s.bottom_out_force_gf}gf`);
+      if(num(s.scratchiness_rating)!==null) why.push(`매끄러움 ${s.scratchiness_rating}/5`);
+      if(num(s.wobble_rating)!==null) why.push(`안정성(워블) ${s.wobble_rating}/5`);
+      if(num(s.contact_rating)!==null) why.push(`접점부 ${s.contact_rating}/5`);
+      const krBadge = s.kr_available ? `<span class="kr-badge ${s.kr_available.startsWith('확인')?'live':'mention'}">KR${s.kr_price_krw?' · '+esc(s.kr_price_krw):''}</span>` : '';
+      return `<div class="rec-card">
+        ${switchAvatar(s, typeTone(tc), 'avatar-md')}
+        <div class="rec-body">
+          <div class="top-row">
+            <div><b>${i+1}. ${esc(s.name)}</b> <span class="badge ${tc}">${esc(s.type||'?')}</span> <span class="mat">${esc(s.brand)}</span> ${krBadge}</div>
+            <span class="score">추천도 ${s.__score.toFixed(1)}</span>
+          </div>
+          <div class="why">${why.join(' · ')}</div>
+          <div class="desc">${esc((s.description||'').slice(0,220))}${(s.description||'').length>220?'…':''}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  ['recType','recQuiet','recSmooth','recBrand','recKrOnly'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', renderRecommend);
+  });
+
+  // ---------- FRANKEN / STAB / LUBE / MATERIALS / BRANDS ----------
+  function fk(label,val){ return val ? `<div class="specs"><b>${label}:</b> ${esc(val)}</div>` : ''; }
+
+  document.getElementById('frankenGrid').innerHTML = DB.franken.map(f=>`
+    <div class="card">
+      <div class="card-head">
+        ${avatar(f.name, hashTone(f.name), 'avatar-md')}
+        <h3>${esc(f.name)}</h3>
+      </div>
+      <span class="tag">${esc(f.type)}</span>
+      ${fk('상부 출처', f.top_housing_source)}
+      ${fk('하부 출처', f.bottom_housing_source)}
+      ${fk('스템 출처', f.stem_source)}
+      ${fk('최초 제작자', f.original_creator)}
+      <p>${esc(f.description)||'설명 없음'}</p>
+    </div>`).join('');
+
+  document.getElementById('stabGrid').innerHTML = DB.stabilizers.map(s=>`
+    <div class="card">
+      <div class="card-head">
+        ${avatar(s.brand, hashTone(s.brand), 'avatar-md')}
+        <h3>${esc(s.brand)} ${esc(s.name)}</h3>
+      </div>
+      <span class="tag">${esc(s.type)}</span>
+      ${fk('체결방식', s.mount)}
+      ${fk('소재', s.material)}
+      ${fk('청명함(0~5)', s.clarity_rating)}
+      ${fk('워블/흔들림(0~5)', s.wobble_rating)}
+      ${fk('국내 벤더', s.kr_vendor)}
+      ${fk('국내 가격', s.kr_price_krw)}
+      <p>${esc(s.description)||''}</p>
+      ${s.kr_note?`<p style="color:var(--brand);">${esc(s.kr_note)}</p>`:''}
+    </div>`).join('');
+
+  document.getElementById('lubeGrid').innerHTML = DB.lubes.map(l=>`
+    <div class="card">
+      <div class="card-head">
+        ${avatar(l.brand, hashTone(l.brand), 'avatar-md')}
+        <h3>${esc(l.brand)} ${esc(l.name)}</h3>
+      </div>
+      ${fk('제형', l.form)}
+      ${fk('점도', l.viscosity)}
+      ${fk('기유', l.base_oil)}
+      ${fk('첨가제', l.additives)}
+      ${fk('국내 판매', l.available_kr)}
+      ${fk('국내 벤더', l.kr_vendor)}
+      ${fk('비호환/주의 소재', l.incompatible_materials)}
+      <p>${esc(l.characteristics)||''}</p>
+      ${l.kr_note?`<p style="color:var(--brand);">${esc(l.kr_note)}</p>`:''}
+    </div>`).join('');
+
+  document.getElementById('krVendorGrid').innerHTML = DB.krVendors.map(v=>{
+    const linkLabel = v.url_type === 'store' ? '판매처 바로가기 ↗' : v.url_type === 'official' ? '공식 사이트 ↗' : null;
+    return `
+    <div class="card">
+      <div class="card-head">
+        ${avatar(v.name, hashTone(v.name), 'avatar-md')}
+        <h3>${esc(v.name)}</h3>
+      </div>
+      <span class="tag">${esc(v.category)}</span>
+      <p>${esc(v.notes)}</p>
+      ${v.url && linkLabel ? `<p><a href="${v.url}" target="_blank" rel="noopener" style="color:var(--brand); font-weight:700; text-decoration:none;">${linkLabel}</a></p>` : `<p style="color:var(--text-faint);">확인된 온라인 판매처/공식 사이트 없음</p>`}
+    </div>`;}).join('');
+
+  if(DB.materialsCompare && DB.materialsCompare.rows){
+    const mc = DB.materialsCompare;
+    document.getElementById('materialsCompareTable').innerHTML = `
+      <thead><tr>
+        <th>매끄러움 순위</th><th>소재</th><th>마찰계수</th><th>기계적 강도</th><th>사용 횟수(상/하부·스템 합산)</th><th>대표 스위치 예시</th>
+      </tr></thead>
+      <tbody>
+        ${mc.rows.map(r=>`
+          <tr>
+            <td class="cell-rank">${r.smooth_rank}</td>
+            <td class="cell-material">${esc(r.material)}</td>
+            <td>${esc(r.friction)}</td>
+            <td>${esc(r.strength)}</td>
+            <td>${r.usage_count}회</td>
+            <td>${esc((r.examples||[]).join(', ')) || '-'}</td>
+          </tr>`).join('')}
+      </tbody>`;
+    if(mc.other){
+      document.getElementById('materialsOtherNote').innerHTML =
+        `<b>${esc(mc.other.label)}:</b> 전체 ${mc.other.usage_count}회(${mc.other.unique_count}종) 등장. `+
+        `${esc(mc.other.notes)} 예: ${esc((mc.other.top_examples||[]).slice(0,8).join(', '))}`;
+    }
+  }
+
+  document.getElementById('materialsGrid').innerHTML = DB.materials.map(m=>`
+    <div class="card">
+      <div class="card-head">
+        ${avatar(m.material, hashTone(m.material), 'avatar-md')}
+        <h3>${esc(m.material)}</h3>
+      </div>
+      ${fk('마찰계수', m.friction)}
+      ${fk('기계적 강도', m.strength)}
+      ${fk('장점', m.pros)}
+      ${fk('단점', m.cons)}
+      <p>${esc(m.notes)}</p>
+    </div>`).join('');
+
+  document.getElementById('brandsGrid').innerHTML = DB.brandProfiles.map((b,i)=>`
+    <div class="card">
+      <div class="card-head">
+        ${avatar(b.brand, hashTone(b.brand), 'avatar-lg')}
+        <h3>${esc(b.brand)}</h3>
+      </div>
+      <p>${esc(b.short_intro || b.detail_text || b.profile_text || '')}</p>
+      ${b.kr_distribution_note?`<p style="color:var(--brand);"><b>국내 유통:</b> ${esc(b.kr_distribution_note)}</p>`:''}
+      ${b.detail_text?`
+        <span class="brand-more" onclick="const d=document.getElementById('brand-detail-${i}'); const open=d.style.display!=='none'; d.style.display=open?'none':'block'; this.textContent=open?'자세히 보기 ▾':'접기 ▴';">자세히 보기 ▾</span>
+        <div class="brand-detail" id="brand-detail-${i}" style="display:none;">${esc(b.detail_text)}</div>`:''}
+    </div>`).join('');
+
+  const sources = [
+    {name:'ThereminGoat Switches', url:'https://www.theremingoat.com/switches', note:'스위치 리뷰·포스커브. 이 세션에서는 접근이 차단되어(robots.txt) 직접 스크랩하지 못했습니다 — 직접 방문 권장.'},
+    {name:'Switch Oddities', url:'https://switchoddities.com/', note:'2,300여 종의 스위치 단품 판매처. 카탈로그 규모가 방대해 전수 스크랩 대신 참고 링크로 제공합니다.'},
+    {name:'Kinetic Labs — Switches', url:'https://kineticlabs.com/switches', note:'해외 스위치 판매처. 일부 제품(HMX Latte, Gateron Oil King 등) 가격·특징을 확인함.'},
+    {name:'ThereminGoat/switch-scores (GitHub)', url:'https://github.com/ThereminGoat/switch-scores/tree/master', note:'스위치별 포스커브/스코어시트 PDF 저장소. 이 세션에서는 GitHub 접근이 차단되어 목록화하지 못했습니다 — 직접 방문 권장.'},
+    {name:'기계식키보드마이너갤러리 정보글 & 스위치 데이터 문서 (Google Sheets)', url:'https://docs.google.com/spreadsheets/d/1fawDdeUoMR80Hwye1d3tgQz6bB3fcD5iocUqGmXtePE/edit', note:'이 데이터베이스의 주 출처. 커뮤니티가 공동 편집하는 위키형 문서이며, 스위치·프랑켄축·스테빌·윤활제·소재 특성 데이터를 여기서 정리했습니다.'},
+    {name:'내가아는 국내 커스텀 키보드 위주 관련 샵 정리 (arca.live)', url:'https://arca.live/b/keyma/119339175', note:'국내 벤더 디렉토리 작성에 사용한 커뮤니티 정리글.'},
+    {name:'스웨그키 공식 온라인 스토어', url:'https://www.swagkey.kr/', note:'2026년 9월 기준 실시간 판매 스위치 목록·가격을 직접 확인해 "KR" 배지 데이터에 반영했습니다.'},
+    {name:'TX Keyboard (스테빌라이저 전문)', url:'https://txkeyboard.com/', note:'TX AP 스테빌라이저 가격·재고 상태를 직접 확인했습니다.'},
+    {name:'키네틱스 (Keynetix)', url:'https://keynetix.kr/', note:'BSUN·HMX(Haimu)·ChosFox 특주 스위치 취급을 확인했습니다.'},
+    {name:'묻고 답하기 — 트리보시스 3204 vs 크라이톡스 205g0 (kbdlab)', url:'https://kbdlab.co.kr/index.php?document_srl=6087276&mid=board_CDST33', note:'국내 윤활제 사용 경향(크라이톡스 205g0가 더 대중적인 이유) 참고.'},
+  ];
+  document.getElementById('sourceList').innerHTML = sources.map(s=>`
+    <li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.name)}</a><span class="note">${esc(s.note)}</span></li>
+  `).join('');
+
+  // ---------- TABS ----------
+  document.getElementById('tabs').addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-view]');
+    if(!btn) return;
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active', b===btn));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+  });
+
+  renderDb();
+  renderRecommend();
+})();
+</script>
+
+</body></html>
