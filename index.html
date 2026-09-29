@@ -10,7 +10,13 @@
 <meta property="og:description" content="커스텀 키보드 스위치 656종의 소재·스펙·타건 특성과 국내 판매 정보를 정리한 데이터베이스와 스위치 추천 도우미.">
 <meta property="og:locale" content="ko_KR">
 <meta name="theme-color" content="#3182f6">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='10' width='52' height='46' rx='12' fill='%233182f6'/%3E%3Crect x='14' y='16' width='36' height='28' rx='8' fill='%23eff6ff'/%3E%3Cpath d='M29 22h6v5h5v6h-5v5h-6v-5h-5v-6h5z' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='14' fill='%233182f6'/%3E%3Crect x='13' y='12' width='38' height='34' rx='9' fill='%23eff6ff'/%3E%3Cpath d='M29.5 20h5v6h6v5h-5v6h-5v-6h-6v-5h6z' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="스위치 아카이브">
+<meta name="mobile-web-app-capable" content="yes">
+<style>.icon-btn[hidden]{display:none}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
@@ -178,6 +184,20 @@
   }
   select:hover{border-color:var(--border-strong);}
   select:focus{background:var(--surface); border:1.5px solid var(--brand); outline:none;}
+  .no-label{
+    display:inline-flex; align-items:center; justify-content:center; flex:none; min-width:60px; height:22px; padding:0 7px;
+    border-radius:6px; background:var(--surface-3); color:var(--text-dim);
+    font:600 .68rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; letter-spacing:.01em;
+    font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .no-label.md{min-width:64px; height:24px; font-size:.72rem; margin-top:2px;}
+  .no-label.lg{min-width:82px; height:32px; font-size:.9rem; border-radius:8px; background:var(--brand-weak); color:var(--brand-strong);}
+  .info-chip{display:inline-flex; align-items:center; font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:6px; margin-left:8px; background:var(--good-soft); color:var(--good); vertical-align:middle;}
+  .data-note{margin-top:10px; padding:9px 13px; border-radius:10px; background:var(--tactile-soft); color:var(--text-dim); font-size:.78rem; line-height:1.6;}
+  .data-note b{color:var(--tactile);}
+  .code-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:6px 14px; margin:10px 0 2px; padding:0; list-style:none; font-size:.8rem;}
+  .code-grid li{display:flex; align-items:center; gap:8px; color:var(--text-dim);}
+  .code-grid li em{margin-left:auto; font-style:normal; color:var(--text-faint); font-size:.72rem; white-space:nowrap;}
   .type-toggle{display:flex; gap:6px;}
   .type-toggle button{
     font-family:inherit; font-size:.8rem; font-weight:600; padding:7px 14px; border-radius:var(--radius-full);
@@ -205,6 +225,7 @@
     .filters{gap:6px;}
     .filters input[type="text"]{flex-basis:100%;}
     .result-count{margin-left:0;}
+    .name-cell{flex-direction:column; align-items:flex-start; gap:5px;}
     nav.tabs{gap:16px;}
   }
   .result-count{font-size:.78rem; color:var(--text-faint); margin-left:auto; white-space:nowrap; font-weight:500;}
@@ -355,6 +376,7 @@
       <div class="header-tools">
         <button class="icon-btn" id="themeBtn" type="button" aria-label="화면 테마 전환"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg> <span id="themeLabel">시스템 테마</span></button>
         <a class="icon-btn" id="xlsxLink" href="스위치_아카이브.xlsx" download><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.5-3.5M8 10l3.5-3.5M2.5 13.5h11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 엑셀 내려받기</a>
+        <button class="icon-btn" id="installBtn" type="button" hidden><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> 앱으로 설치</button>
         <span class="updated-note">데이터 기준일 2026-09</span>
       </div>
     </div>
@@ -380,7 +402,7 @@
   <!-- DB VIEW -->
   <section class="view active panel" id="view-db">
     <div class="filters">
-      <input type="text" id="search" placeholder="이름·설명 검색 (예: 홀리판다, 저소음, 로우피치)">
+      <input type="text" id="search" placeholder="이름·번호·설명 검색 (예: 홀리판다, GAT-043, 저소음)">
       <select id="brandFilter"><option value="">전체 브랜드</option></select>
       <div class="type-toggle" id="typeToggle">
         <button data-t="리니어">리니어</button>
@@ -391,6 +413,7 @@
       <label class="chk"><input type="checkbox" id="silentOnly"> 저소음만</label>
       <label class="chk"><input type="checkbox" id="newOnly"> 신규 추가만</label>
       <select id="sortSel">
+        <option value="no">번호순</option>
         <option value="name">이름순</option>
         <option value="brand">브랜드순</option>
         <option value="bottom">바닥압 낮은순</option>
@@ -407,7 +430,7 @@
         <thead>
           <tr>
             <th data-k="brand">브랜드</th>
-            <th data-k="name">스위치명</th>
+            <th data-k="no">번호 · 스위치명</th>
             <th data-k="type">타입</th>
             <th data-k="force">키압(입력/바닥, gf)</th>
             <th data-k="mat">소재(상-하-스템)</th>
@@ -557,9 +580,14 @@
       <div class="legend-item"><b style="color:var(--good);">확인됨</b> — 2026년 9월 기준 스웨그키·몬스타기어·체리 공식 스토어·키크론 코리아·다나와/쿠팡 등 국내 판매처에서 판매 페이지(또는 검색 결과의 판매 목록)를 확인한 항목. 확인된 경우 개당 가격을 함께 표기했습니다. 해외직구 목록만 있는 경우 따로 적어두었습니다.</div>
       <div class="legend-item"><b>언급됨</b> — 원본 위키 문서나 국내 커뮤니티(기계식키보드 갤러리·퀘이사존·클리앙 등), 보도자료에 국내 벤더명이 판매처/특주처로 언급된 항목. 실시간 재고는 별도로 확인이 필요합니다.</div>
       <div class="legend-item">배지가 없다고 해서 국내에서 못 구하는 것은 아닙니다 — 이번 조사에서 국내 판매 정보를 확인하지 못했을 뿐이며, 특히 네이버 스마트스토어 기반 벤더(지온웍스·키네틱스·너굴웍스 등)는 접근 제한으로 실시간 카탈로그 전수 확인은 하지 못했습니다.</div>
-      <h2>스위치 옆 아이콘 안내</h2>
-      <div class="legend-item">이름 옆의 색상 원형 아이콘은 <b>실제 제품 사진이 아닌 식별용 모노그램</b>입니다. 이 페이지는 외부 이미지를 불러오지 않고 완전히 자체 완결적으로 동작하도록 발행되어, <span class="js-total">전체</span>종 각각의 정품 사진을 안정적으로 표시할 방법이 없었습니다(제조사별 이미지를 낱개로 다운로드해 파일에 내장하는 방법도 검토했지만 용량 제한과 저작권 문제로 제외했습니다).</div>
-      <div class="legend-item">대신 스위치 DB·추천 도우미에서는 <b>타입별 색상</b>(리니어=파랑, 택타일=주황, 클릭=빨강, 홀이펙트=초록)으로, 프랑켄·스테빌라이저·윤활제·제조사·국내 벤더 카드에서는 <b>이름 기반 색상</b>으로 아이콘을 구분해 최소한의 시각적 단서를 제공합니다.</div>
+      <h2>스위치 번호 안내</h2>
+      <div class="legend-item"><b>번호 체계</b> — 스위치명 앞의 <b>브랜드 코드-순번</b>(예: <span class="mono">GAT-043</span>)은 이 데이터베이스의 고유 번호입니다. 코드는 제작사/브랜드마다 알파벳 3글자이고, 순번은 브랜드 안에서 <b>영문 이름 가나다·ABC순</b>(영문 → 한글 순서)으로 처음 한 번 매긴 뒤 <b>바뀌지 않습니다</b>. 새 스위치는 해당 브랜드의 마지막 번호 뒤에 이어 붙습니다.</div>
+      <div class="legend-item"><b>쓰는 법</b> — 검색창에 번호(예: <span class="mono">HMX-012</span>)를 넣으면 바로 찾을 수 있고, 정렬을 "번호순"으로 두면 브랜드 코드별로 묶여 보입니다. 타입은 이름 옆 색 배지(리니어=파랑, 택타일=주황, 클릭=빨강, 마그네틱=초록)로 구분합니다.</div>
+      <div class="legend-item">실제 제품 사진은 이 페이지가 외부 이미지를 불러오지 않는 자체 완결형이라 넣지 못했습니다. 프랑켄·스테빌라이저·윤활제·제조사·국내 벤더 카드의 원형 글자 아이콘은 이름 기반의 식별용 모노그램입니다.</div>
+      <div class="legend-item"><b>브랜드 코드표</b> (스위치 수)
+        <ul class="code-grid" id="brandCodeGrid"></ul>
+      </div>
+      <div class="legend-item"><b>"OO 기준" 표시</b> — 상세 정보를 채울 때 가장 우선한 출처 유형입니다. <b>제작사</b>(스위치를 만든 공장 공식 페이지) → <b>특주사(의뢰사)</b>(스위치를 주문·유통한 브랜드/벤더의 공식 페이지) → <b>판매처</b> → <b>리뷰</b> → <b>커뮤니티 DB</b> 순으로 신뢰했고, 출처마다 값이 다르면 기존 값을 덮어쓰지 않고 "출처 간 차이"로 따로 적어두었습니다.</div>
       <h2>데이터 출처</h2>
       <ul class="source-list" id="sourceList"></ul>
     </div>
@@ -576,7 +604,6 @@
 (function(){
   const DB = window.SWITCH_DB;
   const switches = DB.switches;
-  buildAliasRanks(switches);
 
   // ---------- helpers ----------
   function num(v){ const n = parseFloat(v); return isNaN(n) ? null : n; }
@@ -631,23 +658,9 @@
     return `<span class="avatar ${size} ${tone}">${esc(initials(text))}</span>`;
   }
 
-  // 같은 모노그램(별칭)을 쓰는 스위치가 여럿이면, 전체 업로드 스위치 기준으로
-  // 이름 내림차순 정렬 후 그룹 내 순번을 매겨 아바타에 글자 대신 번호를 표기한다.
-  function buildAliasRanks(list){
-    const groups = {};
-    list.forEach(s => {
-      const key = initials(s.name);
-      (groups[key] = groups[key] || []).push(s);
-    });
-    Object.values(groups).forEach(group => {
-      if(group.length <= 1) return;
-      group.sort((a,b) => b.name.localeCompare(a.name, 'ko')); // 이름 내림차순
-      group.forEach((s,i) => { s.__aliasNum = i+1; });
-    });
-  }
-  function switchAvatar(s, tone, size){
-    const label = s.__aliasNum ? String(s.__aliasNum) : initials(s.name);
-    return `<span class="avatar ${size} ${tone}" title="${s.__aliasNum?'별칭 중복 순번 '+s.__aliasNum+' · ':''}${esc(s.name)}">${esc(label)}</span>`;
+  // 스위치 번호 = 브랜드 코드-순번 (예: GAT-043). data.js의 no 필드에 고정 저장된 값을 그대로 표시한다.
+  function noLabel(s, size){
+    return `<span class="no-label${size?' '+size:''}" title="${esc(s.no||'')} · ${esc(s.name)}">${esc(s.no||'—')}</span>`;
   }
 
   // ---------- populate filter selects ----------
@@ -687,7 +700,7 @@
   });
 
   // ---------- DB VIEW state ----------
-  let state = { search:'', brand:'', types:new Set(), sort:'name', page:0, pageSize:30, krOnly:false, silentOnly:false, newOnly:false };
+  let state = { search:'', brand:'', types:new Set(), sort:'no', page:0, pageSize:30, krOnly:false, silentOnly:false, newOnly:false };
 
   function applyFilter(){
     const q = state.search.trim().toLowerCase();
@@ -698,7 +711,7 @@
       if(state.silentOnly && !isSilent(s)) return false;
       if(state.newOnly && !s.__new) return false;
       if(q){
-        const hay = (s.name+' '+s.brand+' '+(s.commissioner||'')+' '+(s.kr_vendor_hint||'')+' '+s.description).toLowerCase();
+        const hay = ((s.no||'')+' '+s.name+' '+s.brand+' '+(s.commissioner||'')+' '+(s.kr_vendor_hint||'')+' '+s.description).toLowerCase();
         if(hay.indexOf(q)===-1) return false;
       }
       return true;
@@ -711,6 +724,7 @@
       case 'smooth': rows.sort((a,b)=>(num(b.scratchiness_rating)??-1)-(num(a.scratchiness_rating)??-1)); break;
       case 'stable': rows.sort((a,b)=>(num(b.wobble_rating)??-1)-(num(a.wobble_rating)??-1)); break;
       case 'recent': rows.sort((a,b)=>b.__idx-a.__idx); break;
+      case 'no': rows.sort((a,b)=>(a.no||'').localeCompare(b.no||'', 'en', {numeric:true})); break;
       default: rows.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
     }
     return rows;
@@ -740,7 +754,7 @@
       tr.innerHTML = `
         <td class="mat">${esc(s.brand)}</td>
         <td class="name-cell">
-          ${switchAvatar(s, typeTone(tc), 'avatar-sm')}
+          ${noLabel(s)}
           <div style="min-width:0;">
             <span class="n">${esc(s.name)}${krBadge}${s.__new?'<span class="new-badge">NEW</span>':''}</span>
             ${s.commissioner?`<span class="b">특주: ${esc(s.commissioner)}</span>`:''}
@@ -757,9 +771,9 @@
       detail.className = 'detail-row';
       detail.innerHTML = `<td colspan="8">
         <div class="detail-head">
-          ${switchAvatar(s, typeTone(tc), 'avatar-lg')}
+          ${noLabel(s,'lg')}
           <div>
-            <div style="font-weight:700; font-size:1rem;">${esc(s.name)}</div>
+            <div style="font-weight:700; font-size:1rem;">${esc(s.name)}${s.info_source?`<span class="info-chip" title="상세 정보를 확인한 주된 출처 유형">${esc(s.info_source)} 기준</span>`:''}</div>
             <div style="font-size:.8rem; color:var(--text-faint); margin-top:2px;">${esc(s.brand)}${s.commissioner?` · 특주: ${esc(s.commissioner)}`:''}</div>
           </div>
         </div>
@@ -782,6 +796,7 @@
         <div>${esc(s.description)||'등록된 상세 설명이 없습니다.'}</div>
         ${s.force_raw?`<div class="ref-links"><b style="color:var(--text-dim);">스펙 원문:</b> ${esc(s.force_raw)}</div>`:''}
         ${refLinks(s.ref_urls)}
+        ${s.data_note?`<div class="data-note"><b>출처 간 차이:</b> ${esc(s.data_note)}</div>`:''}
       </td>`;
       tr.addEventListener('click', ()=> detail.classList.toggle('open'));
       tbody.appendChild(tr);
@@ -813,9 +828,9 @@
   });
   document.querySelectorAll('thead th[data-k]').forEach(th=>{
     th.addEventListener('click', ()=>{
-      const map = {brand:'brand', name:'name', force:'bottom', mat:null, travel:null, pitch:null, ratings:null};
+      const map = {brand:'brand', no:'no', name:'name', force:'bottom', mat:null, travel:null, pitch:null, ratings:null};
       const k = map[th.dataset.k];
-      if(k){ state.sort = state.sort===k ? (k+'Desc') : k; document.getElementById('sortSel').value = state.sort in {name:1,brand:1,bottom:1,bottomDesc:1,smooth:1,stable:1} ? state.sort : 'name'; renderDb(); }
+      if(k){ state.sort = state.sort===k ? (k+'Desc') : k; document.getElementById('sortSel').value = state.sort in {no:1,name:1,brand:1,bottom:1,bottomDesc:1,smooth:1,stable:1,recent:1} ? state.sort : 'no'; renderDb(); }
     });
   });
 
@@ -875,7 +890,7 @@
       if(num(s.contact_rating)!==null) why.push(`접점부 ${s.contact_rating}/5`);
       const krBadge = s.kr_available ? `<span class="kr-badge ${s.kr_available.startsWith('확인')?'live':'mention'}">KR${s.kr_price_krw?' · '+esc(s.kr_price_krw):''}</span>` : '';
       return `<div class="rec-card">
-        ${switchAvatar(s, typeTone(tc), 'avatar-md')}
+        ${noLabel(s,'md')}
         <div class="rec-body">
           <div class="top-row">
             <div><b>${i+1}. ${esc(s.name)}</b> <span class="badge ${tc}">${esc(s.type||'?')}</span> <span class="mat">${esc(s.brand)}</span> ${krBadge}</div>
@@ -1027,6 +1042,15 @@
   `).join('');
 
   // ---------- TABS ----------
+  (function buildBrandCodes(){
+    const grid = document.getElementById('brandCodeGrid');
+    if(!grid) return;
+    const m = {};
+    switches.forEach(s => { const c=(s.no||'').split('-')[0]; if(!c) return; (m[s.brand]=m[s.brand]||{code:c,n:0}).n++; });
+    grid.innerHTML = Object.entries(m).sort((a,b)=>a[1].code.localeCompare(b[1].code)).map(([b,v]) =>
+      `<li><span class="no-label">${esc(v.code)}</span>${esc(b)}<em>${v.n}종</em></li>`).join('');
+  })();
+
   function showView(view, push){
     const btn = document.querySelector(`#tabs button[data-view="${view}"]`);
     if(!btn) return;
@@ -1051,5 +1075,21 @@
 })();
 </script>
 
+<script>
+// 설치형 앱(PWA): 주소창 없이 아이콘으로 열리게 하고, 한 번 열어본 뒤에는 오프라인에서도 동작하게 한다.
+(function(){
+  if(/^https?:$/.test(location.protocol) && 'serviceWorker' in navigator){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+  var deferred = null, btn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; if(btn) btn.hidden = false; });
+  window.addEventListener('appinstalled', function(){ deferred = null; if(btn) btn.hidden = true; });
+  if(btn) btn.addEventListener('click', function(){
+    if(!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.finally(function(){ deferred = null; btn.hidden = true; });
+  });
+})();
+</script>
 </body>
 </html>
