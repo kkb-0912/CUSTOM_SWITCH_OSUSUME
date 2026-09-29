@@ -1,13 +1,13 @@
-# 커스텀 스위치 데이터베이스 — 작업 노트 (최종 업데이트 2026-09-17, Round 7)
+# 커스텀 스위치 데이터베이스 — 작업 노트 (최종 업데이트 2026-09-29, Round 8)
 
 ## 산출물
 - **스위치 아카이브** (Claude Artifact, Sheets 아티팩트 대체): https://claude.ai/artifact/Vc2JSKB5KLD1zaDcj79GpP
-  - 검색/필터(브랜드, 타입, **국내 판매 여부**)/정렬 가능한 스위치 DB 테이블 (**413종**, 국내 관련 정보 있는 항목 130개)
+  - 검색/필터(브랜드, 타입, **국내 판매 여부**)/정렬 가능한 스위치 DB 테이블 (**656종**, 국내 판매 확인 149개 + 언급 98개)
   - "추천 도우미" 탭: 타입/바닥압/정숙성/매끄러움/브랜드 조건으로 점수화해 추천 (국내 구매 가능만 보기 필터 포함)
   - 프랑켄 스위치(7), 스테빌라이저(12), 윤활제(7), 소재별 특성(8종 비교표+기타 소재 요약), 제조사 소개(8개 브랜드, 짧은 소개+더보기), 국내 벤더(15개, 판매처/공식사이트 링크 구분) 참고 탭 포함
   - 이 계정에는 "Sheets" 아티팩트 타입이 없어서, 직접 제작한 인터랙티브 HTML 페이지로 대체 발행함
   - **디자인: 토스(Toss) 디자인 시스템(TDS) 참조로 리스킨** — 자세한 내용은 아래 "디자인 리스킨" 절 참고
-  - **현재 발행 버전: Version 7 (Round 7 반영)**
+  - **현재 발행 버전: Version 8 (Round 8 반영)** · GitHub 저장소: https://github.com/kkb-0912/CUSTOM_SWITCH_OSUSUME (GitHub Pages 배포용 패키지 제공)
 - **스위치_아카이브.xlsx**: 동일 데이터의 오프라인 편집용 엑셀 버전 (대화창에 첨부됨). 스위치 DB/프랑켄/스테빌라이저/윤활제/소재별 특성/제조사 소개/국내 벤더 총 7개 시트.
 
 ## 데이터 출처
@@ -125,6 +125,30 @@
 - TX Keyboard·펀키스는 이번 세션 한정 접근 문제(권한 승인 타임아웃/컴퓨터 연결 끊김)로 실패했을 가능성이 있으므로, 컴퓨터 연결이 안정적인 세션에서 재시도 권장.
 - 몬스타기어 9페이지째(스크랩 생략분) 및 스웨그키 카탈로그의 나머지 브랜드 필터도 시간이 허락하면 순회할 가치가 있음.
 - 이번 라운드에서 등재를 보류한 후보(Peri 택타일, 후아노 Gift 등)는 실물/정확한 제품명 확인 시 재조사 권장.
+
+## 7차 세션 업데이트 (2026-09-29, Round 8) — 656종으로 확장 + GitHub Pages 배포 정리
+
+사용자 요청: "제공한 스위치 데이터 이외에 더 많은 스위치를 학습하고, 국내 판매 스위치도 추가 기입, 아카이브 형식을 유지하면서 배포할 수 있게 다듬기". 범위는 사용자 선택에 따라 **해외 포함 대규모 200종+**, 배포 대상은 **GitHub Pages**.
+
+### 확장 방법
+- 413종 DB의 브랜드별 공백을 분석한 뒤, 6개 그룹으로 나눠 병렬 리서치 에이전트가 스키마에 맞춘 JSON을 작성(research/groupA~F.json):
+  A Cherry·Gateron(MX2A·G Pro 3.0·Milky Pro·Cap V2·Ink V2·Zeal 특주) / B Kailh Box·Speed·Pro·Hako, Outemu, Huano, Jwick / C 국내 대중 브랜드(Akko CS, Leobog=독거미 순정축, Keychron, Varmilo EC, Epomaker) / D 엔수지애스트 특주(Durock, TTC, Tecsee, JWK, Everglide, Wuque, Glorious, Drop, NovelKeys, Kinetic Labs) / E 마그네틱(HE) 전 브랜드 / F 국내 판매 신작(몬스타기어 자체 특주, HMX·SWK·지온웍스 등).
+- 규칙: 제조사 공식 스펙 또는 1개 이상 리뷰/DB 출처가 있는 것만 등재, 스위치별 참고 URL을 새 필드 `ref_urls`에 기록, 원본 위키 기준(체리 흑축 기준점)의 주관 별점(접점부·워블·서걱임)은 임의로 채우지 않고 공란 유지.
+- 브랜드 표기 규칙: 기존 파운드리 브랜드가 만든 특주는 brand=파운드리, commissioner=의뢰사(예: Zilents V2 → Gateron/ZealPC, Lekker L60 V2 → Gateron/Wooting, Akko CS 일부 → KTT/Akko).
+- 병합(merge_round8.py): 그룹 간 중복(Jupiter Red/Banana, WS Silent Linear, HMX Snow Silent HE, KS-20JADE 특주, Geon Raw HE) 정리, 기존 DB와 겹치는 항목(WS Silent Tactile=HMX Silent Tactile, WS Quartz=HMX Quartz) 제외, WS 스탠다드 저소음 리니어는 기존 DB 관례대로 HMX/Wuque Studio로 표기. **신규 243종 → 총 656종.**
+- 국내 판매 보강: A그룹은 검색 한도 소진으로 에이전트가 국내 정보를 못 채워, 내장 브라우저로 다나와 검색을 직접 열어 체리 공식 스토어(MX2A 적축 280원·저소음 적축 300원), 키크론 게이트론 저소음 110pcs, 게이트론 밀키 황축 프로 오픈마켓 목록 등을 확인해 반영. 그 결과 국내 판매 확인 149종·언급 98종.
+
+### 새로 확인했지만 이번에 넣지 않은 것 (후속 후보)
+- 다나와에서 체리 신작 **MX3A Lumina(갈축, 300원)**, **체리 TMR 스위치 V2(자기저항 자석축, 550원)**, **게이트론 Jade Dragon HE KS-20G**, **Leobog 저소음 솜사탕축·리퍼축 그린**, **Gateron Smoothie Pink Silent**의 국내 판매를 확인했으나 스펙 출처를 확보하지 못해(웹 검색 한도 소진) 이번에는 등재하지 않음.
+- 에이전트가 근거 부족으로 건너뛴 항목: HMX 아리랑 풍신화, HMX Pink Sea Salt silent, BSUN Blue Star, Everglide Dark Jade, Durock Anubis/Daybreak, Tecsee Coral/Emerald, Kailh Jellyfish HE, Leobog·Aula 자석축 등.
+- Womier, FL-Esports, Rapoo, Royal Kludge, Darmoshark, NuPhy 자체 스위치는 조사하지 못함.
+
+### 아카이브 다듬기 (형식·디자인 유지)
+- 타입 필터에 "마그네틱" 추가(마그네틱/홀이펙트 계열을 한 분류로 묶음), "저소음만"·"신규 추가만" 필터, "최근 추가순" 정렬, 추천 도우미에 "마그네틱(래피드 트리거)" 타입 추가.
+- 신규 항목 NEW 배지, 상세 화면에 스펙 원문(force_raw)과 참고 출처 링크 표시, 검색 대상에 특주처·판매처 포함, 검색 입력 디바운스, 결과 없음 안내.
+- 라이트/다크/시스템 테마 전환 버튼(브라우저 저장), 탭별 주소(#recommend 등) 공유·뒤로가기 대응, 탭 접근성 속성, 모바일 필터 줄바꿈 개선.
+- 상세 카드의 별점 점이 세로로 쌓이던 기존 CSS 버그 수정. "384종/413종" 하드코딩 문구를 실제 개수로 자동 표시하도록 변경. 푸터에 GitHub 링크, 헤더에 엑셀 내려받기 링크·데이터 기준일.
+- 배포 패키지(build_deploy.py): 완전한 HTML 문서(lang=ko, meta description, OG 태그, SVG 파비콘) + data.js + 엑셀 + README + 노트 + .nojekyll → CUSTOM_SWITCH_OSUSUME-deploy.zip. 이 세션 환경은 github.com 접근이 조직 네트워크 정책으로 막혀 있어 직접 push는 불가 — 사용자가 zip 내용을 저장소에 올리고 Settings → Pages에서 main 브랜치/root로 켜면 됨.
 
 ## 후속 작업 아이디어
 - ThereminGoat 리뷰나 GitHub PDF 스코어시트를 브라우저 세션(로그인/승인 필요)으로 추가 스크랩해 포스커브 데이터를 보강할 수 있음.

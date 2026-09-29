@@ -1,5 +1,16 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>스위치 아카이브</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>스위치 아카이브 — 커스텀 키보드 스위치 데이터베이스</title>
+<meta name="description" content="커스텀 키보드 스위치 656종의 소재·스펙·타건 특성과 국내 판매 정보를 정리한 데이터베이스와 스위치 추천 도우미.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="스위치 아카이브">
+<meta property="og:description" content="커스텀 키보드 스위치 656종의 소재·스펙·타건 특성과 국내 판매 정보를 정리한 데이터베이스와 스위치 추천 도우미.">
+<meta property="og:locale" content="ko_KR">
+<meta name="theme-color" content="#3182f6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='10' width='52' height='46' rx='12' fill='%233182f6'/%3E%3Crect x='14' y='16' width='36' height='28' rx='8' fill='%23eff6ff'/%3E%3Cpath d='M29 22h6v5h5v6h-5v5h-6v-5h-5v-6h5z' fill='%233182f6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
@@ -176,6 +187,26 @@
   .type-toggle button.on[data-t="리니어"]{background:var(--linear-soft); border-color:var(--linear-soft); color:var(--linear);}
   .type-toggle button.on[data-t="택타일"]{background:var(--tactile-soft); border-color:var(--tactile-soft); color:var(--tactile);}
   .type-toggle button.on[data-t="클릭"]{background:var(--clicky-soft); border-color:var(--clicky-soft); color:var(--clicky);}
+  .type-toggle button.on[data-t="홀이펙트"]{background:var(--hall-soft); border-color:var(--hall-soft); color:var(--hall);}
+  .new-badge{display:inline-flex; align-items:center; font-size:.62rem; font-weight:800; padding:2px 6px; border-radius:6px; margin-left:4px; vertical-align:middle; background:var(--brand-weak); color:var(--brand); letter-spacing:.03em;}
+  .empty-row td{padding:40px 16px !important; text-align:center; color:var(--text-faint); cursor:default;}
+  .ref-links{margin-top:10px; font-size:.78rem; color:var(--text-faint);}
+  .ref-links a{color:var(--brand); text-decoration:none; margin-right:10px; word-break:break-all;}
+  .ref-links a:hover{text-decoration:underline;}
+  .header-tools{display:flex; gap:8px; align-items:center; margin-top:14px; flex-wrap:wrap;}
+  .icon-btn{
+    font:inherit; font-size:.78rem; font-weight:600; height:32px; padding:0 12px; border-radius:var(--radius-full);
+    border:1px solid var(--border); background:var(--surface-2); color:var(--text-dim); cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; text-decoration:none;
+  }
+  .icon-btn:hover{border-color:var(--border-strong); color:var(--text);}
+  .updated-note{font-size:.74rem; color:var(--text-faint);}
+  @media (max-width:640px){
+    .filters{gap:6px;}
+    .filters input[type="text"]{flex-basis:100%;}
+    .result-count{margin-left:0;}
+    nav.tabs{gap:16px;}
+  }
   .result-count{font-size:.78rem; color:var(--text-faint); margin-left:auto; white-space:nowrap; font-weight:500;}
 
   table{width:100%; border-collapse:collapse; font-size:.85rem;}
@@ -221,6 +252,8 @@
   tr.detail-row .meta-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-bottom:12px; font-size:.78rem;}
   tr.detail-row .meta-grid div{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:8px 11px;}
   tr.detail-row .meta-grid div span{display:block; color:var(--text-faint); font-size:.68rem; letter-spacing:.02em; margin-bottom:2px;}
+  tr.detail-row .meta-grid div span.rating{display:inline-flex; margin:4px 0 0; font-size:inherit;}
+  tr.detail-row .meta-grid div span.dot{display:inline-block; margin:0;}
 
   .pager{display:flex; justify-content:center; align-items:center; gap:12px; padding:16px; font-size:.82rem; color:var(--text-dim); border-top:1px solid var(--border-soft);}
   .pager button{
@@ -311,13 +344,19 @@
     thead th:nth-child(n+7), tbody td:nth-child(n+7){display:none;}
   }
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header class="top">
     <div class="titlebox">
       <span class="eyebrow">Custom Switch Database</span>
       <h1>스위치 아카이브</h1>
-      <p>커스텀 키보드 스위치 <span class="mono" id="totalCount">358</span>종의 소재·스펙·타건 특성을 정리한 데이터베이스. 모든 별점(접점부·워블·서걱임)은 문서 내에서 <b>체리 MX Black을 기준점</b>으로 매겨졌습니다. <span class="kr-badge live">KR</span> 배지는 국내 벤더 판매가 확인/언급된 항목입니다.</p>
+      <p>커스텀 키보드 스위치 <span class="mono" id="totalCount">–</span>종의 소재·스펙·타건 특성을 정리한 데이터베이스. 모든 별점(접점부·워블·서걱임)은 문서 내에서 <b>체리 MX Black을 기준점</b>으로 매겨졌습니다. <span class="kr-badge live">KR</span> 배지는 국내 판매가 확인/언급된 항목, <span class="new-badge">NEW</span>는 최근 업데이트에서 추가된 항목입니다.</p>
+      <div class="header-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="화면 테마 전환"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg> <span id="themeLabel">시스템 테마</span></button>
+        <a class="icon-btn" id="xlsxLink" href="스위치_아카이브.xlsx" download><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0-3.5-3.5M8 10l3.5-3.5M2.5 13.5h11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 엑셀 내려받기</a>
+        <span class="updated-note">데이터 기준일 2026-09</span>
+      </div>
     </div>
     <div class="stats">
       <span class="stat-pill"><b id="totalCount2">0</b>스위치 등록</span>
@@ -347,7 +386,10 @@
         <button data-t="리니어">리니어</button>
         <button data-t="택타일">택타일</button>
         <button data-t="클릭">클릭</button>
+        <button data-t="홀이펙트">마그네틱</button>
       </div>
+      <label class="chk"><input type="checkbox" id="silentOnly"> 저소음만</label>
+      <label class="chk"><input type="checkbox" id="newOnly"> 신규 추가만</label>
       <select id="sortSel">
         <option value="name">이름순</option>
         <option value="brand">브랜드순</option>
@@ -355,6 +397,7 @@
         <option value="bottomDesc">바닥압 높은순</option>
         <option value="smooth">매끄러움순(서걱임 적은순)</option>
         <option value="stable">안정성순(워블 적은순)</option>
+        <option value="recent">최근 추가순</option>
       </select>
       <label class="chk"><input type="checkbox" id="krOnly"> 국내 판매 확인/언급만</label>
       <span class="result-count" id="resultCount"></span>
@@ -393,6 +436,7 @@
           <option value="리니어">리니어</option>
           <option value="택타일">택타일</option>
           <option value="클릭">클릭</option>
+          <option value="홀이펙트">마그네틱(래피드 트리거)</option>
         </select>
       </div>
       <div class="rec-field">
@@ -477,7 +521,7 @@
 
   <!-- MATERIALS -->
   <section class="view panel" id="view-materials">
-    <div class="prose"><h2>소재별 특성</h2><p style="color:var(--text-dim); font-size:.85rem;">이 데이터베이스에 수록된 413종 스위치의 상부/하부 하우징·스템 소재를 실제로 집계해 비교한 표입니다. 마찰계수가 낮을수록(표의 위쪽일수록) 더 매끄러운 순정 촉감을 기대할 수 있습니다. 참고용이며, 배합/가공 숙련도에 따라 실제 체감은 달라질 수 있습니다.</p></div>
+    <div class="prose"><h2>소재별 특성</h2><p style="color:var(--text-dim); font-size:.85rem;">이 데이터베이스에 수록된 <span class="js-total">전체</span>종 스위치의 상부/하부 하우징·스템 소재를 실제로 집계해 비교한 표입니다. 마찰계수가 낮을수록(표의 위쪽일수록) 더 매끄러운 순정 촉감을 기대할 수 있습니다. 참고용이며, 배합/가공 숙련도에 따라 실제 체감은 달라질 수 있습니다.</p></div>
     <div class="table-wrap">
       <table class="cmp-table" id="materialsCompareTable"></table>
     </div>
@@ -510,18 +554,21 @@
       <div class="legend-item"><b>피치 / 볼륨</b> — 서로 다른 개념입니다. 피치는 소리의 높낮이, 볼륨은 소리의 크기(시끄러움 정도). 하이피치+저볼륨, 로우피치+고볼륨 조합도 존재합니다.</div>
       <div class="legend-item"><b>기준점</b> — 문서 내 모든 별점(접점부·워블·서걱임·볼륨)은 <b>체리 MX Black(삼신흑)을 기준</b>으로 매겨졌습니다.</div>
       <h2>KR(국내 판매) 배지 안내</h2>
-      <div class="legend-item"><b style="color:var(--good);">확인됨</b> — 2026년 9월 기준 스웨그키·TX Keyboard 등 국내 벤더 사이트를 직접 열어 실시간 판매 중임을 확인한 항목. 개당 가격을 함께 표기했습니다.</div>
-      <div class="legend-item"><b>언급됨</b> — 원본 위키 문서 자체에 지온웍스·스웨그키·키네틱스·SPM 등 국내 벤더명이 특주처/판매처로 언급되어 있는 항목(실시간 재고는 별도 확인 필요).</div>
+      <div class="legend-item"><b style="color:var(--good);">확인됨</b> — 2026년 9월 기준 스웨그키·몬스타기어·체리 공식 스토어·키크론 코리아·다나와/쿠팡 등 국내 판매처에서 판매 페이지(또는 검색 결과의 판매 목록)를 확인한 항목. 확인된 경우 개당 가격을 함께 표기했습니다. 해외직구 목록만 있는 경우 따로 적어두었습니다.</div>
+      <div class="legend-item"><b>언급됨</b> — 원본 위키 문서나 국내 커뮤니티(기계식키보드 갤러리·퀘이사존·클리앙 등), 보도자료에 국내 벤더명이 판매처/특주처로 언급된 항목. 실시간 재고는 별도로 확인이 필요합니다.</div>
       <div class="legend-item">배지가 없다고 해서 국내에서 못 구하는 것은 아닙니다 — 이번 조사에서 국내 판매 정보를 확인하지 못했을 뿐이며, 특히 네이버 스마트스토어 기반 벤더(지온웍스·키네틱스·너굴웍스 등)는 접근 제한으로 실시간 카탈로그 전수 확인은 하지 못했습니다.</div>
       <h2>스위치 옆 아이콘 안내</h2>
-      <div class="legend-item">이름 옆의 색상 원형 아이콘은 <b>실제 제품 사진이 아닌 식별용 모노그램</b>입니다. 이 페이지는 외부 이미지를 불러오지 않고 완전히 자체 완결적으로 동작하도록 발행되어, 413종 각각의 정품 사진을 안정적으로 표시할 방법이 없었습니다(제조사별 이미지를 낱개로 다운로드해 파일에 내장하는 방법도 검토했지만 용량 제한과 저작권 문제로 제외했습니다).</div>
+      <div class="legend-item">이름 옆의 색상 원형 아이콘은 <b>실제 제품 사진이 아닌 식별용 모노그램</b>입니다. 이 페이지는 외부 이미지를 불러오지 않고 완전히 자체 완결적으로 동작하도록 발행되어, <span class="js-total">전체</span>종 각각의 정품 사진을 안정적으로 표시할 방법이 없었습니다(제조사별 이미지를 낱개로 다운로드해 파일에 내장하는 방법도 검토했지만 용량 제한과 저작권 문제로 제외했습니다).</div>
       <div class="legend-item">대신 스위치 DB·추천 도우미에서는 <b>타입별 색상</b>(리니어=파랑, 택타일=주황, 클릭=빨강, 홀이펙트=초록)으로, 프랑켄·스테빌라이저·윤활제·제조사·국내 벤더 카드에서는 <b>이름 기반 색상</b>으로 아이콘을 구분해 최소한의 시각적 단서를 제공합니다.</div>
       <h2>데이터 출처</h2>
       <ul class="source-list" id="sourceList"></ul>
     </div>
   </section>
 
-  <footer>스위치 아카이브 · 커뮤니티 위키 데이터를 정리한 비공식 참고 자료입니다. 최신 정보는 원본 출처를 확인하세요.</footer>
+  <footer>
+    스위치 아카이브 · 커뮤니티 위키와 공개 리뷰·판매처 정보를 정리한 비공식 참고 자료입니다. 스펙·가격·재고는 조사 시점 기준이며 바뀔 수 있습니다.<br>
+    <a href="https://github.com/kkb-0912/CUSTOM_SWITCH_OSUSUME" target="_blank" rel="noopener" style="color:var(--brand); text-decoration:none; font-weight:600;">GitHub 저장소</a>
+  </footer>
 </div>
 
 <script src="data.js"></script>
@@ -536,10 +583,19 @@
   function esc(s){ return (s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
   function typeClass(t){
     if(!t) return '기타';
+    if(/마그네틱|홀이펙트|HE\)/.test(t)) return '홀이펙트';
     if(t.indexOf('리니어')>=0) return '리니어';
     if(t.indexOf('택타일')>=0) return '택타일';
     if(t.indexOf('클릭')>=0) return '클릭';
     return '기타';
+  }
+  function refLinks(str){
+    const urls = String(str||'').split('|').map(u=>u.trim()).filter(u=>/^https?:\/\//.test(u));
+    if(!urls.length) return '';
+    return '<div class="ref-links"><b style="color:var(--text-dim);">참고 출처:</b> ' + urls.map(u=>{
+      let host = u; try { host = new URL(u).hostname.replace(/^www\./,''); } catch(e){}
+      return `<a href="${esc(u).replace(/"/g,'&quot;')}" target="_blank" rel="noopener">${esc(host)} ↗</a>`;
+    }).join('') + '</div>';
   }
   function ratingDots(v){
     const n = num(v);
@@ -599,6 +655,29 @@
   document.getElementById('brandCount').textContent = brandSet.length;
   document.getElementById('totalCount').textContent = switches.length;
   document.getElementById('totalCount2').textContent = switches.length;
+  document.querySelectorAll('.js-total').forEach(el => el.textContent = switches.length);
+  switches.forEach((s,i) => { s.__idx = i; s.__new = /^round8/.test(s.source_table||''); });
+  function isSilent(s){ return /저소음|silent|사일런트|반묵/i.test((s.type||'')+' '+(s.name||'')); }
+
+  // ---------- theme toggle (system → light → dark) ----------
+  (function(){
+    const root = document.documentElement;
+    const label = document.getElementById('themeLabel');
+    const modes = ['system','light','dark'];
+    const names = {system:'시스템 테마', light:'라이트', dark:'다크'};
+    let mode = 'system';
+    try { mode = localStorage.getItem('sa-theme') || 'system'; } catch(e){}
+    function apply(){
+      if(mode==='system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+      label.textContent = names[mode] || names.system;
+    }
+    apply();
+    document.getElementById('themeBtn').addEventListener('click', ()=>{
+      mode = modes[(modes.indexOf(mode)+1) % modes.length];
+      try { localStorage.setItem('sa-theme', mode); } catch(e){}
+      apply();
+    });
+  })();
   document.getElementById('krCount').textContent = switches.filter(s=>s.kr_available).length;
   const brandFilter = document.getElementById('brandFilter');
   const recBrand = document.getElementById('recBrand');
@@ -608,7 +687,7 @@
   });
 
   // ---------- DB VIEW state ----------
-  let state = { search:'', brand:'', types:new Set(), sort:'name', page:0, pageSize:30, krOnly:false };
+  let state = { search:'', brand:'', types:new Set(), sort:'name', page:0, pageSize:30, krOnly:false, silentOnly:false, newOnly:false };
 
   function applyFilter(){
     const q = state.search.trim().toLowerCase();
@@ -616,8 +695,10 @@
       if(state.brand && s.brand!==state.brand) return false;
       if(state.types.size>0 && !state.types.has(typeClass(s.type))) return false;
       if(state.krOnly && !s.kr_available) return false;
+      if(state.silentOnly && !isSilent(s)) return false;
+      if(state.newOnly && !s.__new) return false;
       if(q){
-        const hay = (s.name+' '+s.brand+' '+s.description).toLowerCase();
+        const hay = (s.name+' '+s.brand+' '+(s.commissioner||'')+' '+(s.kr_vendor_hint||'')+' '+s.description).toLowerCase();
         if(hay.indexOf(q)===-1) return false;
       }
       return true;
@@ -629,6 +710,7 @@
       case 'bottomDesc': rows.sort((a,b)=>(num(b.bottom_out_force_gf)??-1)-(num(a.bottom_out_force_gf)??-1)); break;
       case 'smooth': rows.sort((a,b)=>(num(b.scratchiness_rating)??-1)-(num(a.scratchiness_rating)??-1)); break;
       case 'stable': rows.sort((a,b)=>(num(b.wobble_rating)??-1)-(num(a.wobble_rating)??-1)); break;
+      case 'recent': rows.sort((a,b)=>b.__idx-a.__idx); break;
       default: rows.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
     }
     return rows;
@@ -646,6 +728,9 @@
 
     const tbody = document.getElementById('dbBody');
     tbody.innerHTML = '';
+    if(pageRows.length===0){
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="8">조건에 맞는 스위치가 없습니다. 검색어나 필터를 조정해보세요.</td></tr>';
+    }
     pageRows.forEach((s, idx)=>{
       const tc = typeClass(s.type);
       const krBadge = s.kr_available
@@ -657,7 +742,7 @@
         <td class="name-cell">
           ${switchAvatar(s, typeTone(tc), 'avatar-sm')}
           <div style="min-width:0;">
-            <span class="n">${esc(s.name)}${krBadge}</span>
+            <span class="n">${esc(s.name)}${krBadge}${s.__new?'<span class="new-badge">NEW</span>':''}</span>
             ${s.commissioner?`<span class="b">특주: ${esc(s.commissioner)}</span>`:''}
           </div>
         </td>
@@ -695,6 +780,8 @@
           ${s.kr_note?`<br>${esc(s.kr_note)}`:''}
         </div>` : ''}
         <div>${esc(s.description)||'등록된 상세 설명이 없습니다.'}</div>
+        ${s.force_raw?`<div class="ref-links"><b style="color:var(--text-dim);">스펙 원문:</b> ${esc(s.force_raw)}</div>`:''}
+        ${refLinks(s.ref_urls)}
       </td>`;
       tr.addEventListener('click', ()=> detail.classList.toggle('open'));
       tbody.appendChild(tr);
@@ -702,7 +789,14 @@
     });
   }
 
-  document.getElementById('search').addEventListener('input', e=>{ state.search=e.target.value; state.page=0; renderDb(); });
+  let searchTimer = null;
+  document.getElementById('search').addEventListener('input', e=>{
+    clearTimeout(searchTimer);
+    const v = e.target.value;
+    searchTimer = setTimeout(()=>{ state.search=v; state.page=0; renderDb(); }, 150);
+  });
+  document.getElementById('silentOnly').addEventListener('change', e=>{ state.silentOnly=e.target.checked; state.page=0; renderDb(); });
+  document.getElementById('newOnly').addEventListener('change', e=>{ state.newOnly=e.target.checked; state.page=0; renderDb(); });
   document.getElementById('brandFilter').addEventListener('change', e=>{ state.brand=e.target.value; state.page=0; renderDb(); });
   document.getElementById('sortSel').addEventListener('change', e=>{ state.sort=e.target.value; renderDb(); });
   document.getElementById('krOnly').addEventListener('change', e=>{ state.krOnly=e.target.checked; state.page=0; renderDb(); });
@@ -922,23 +1016,40 @@
     {name:'TX Keyboard (스테빌라이저 전문)', url:'https://txkeyboard.com/', note:'TX AP 스테빌라이저 가격·재고 상태를 직접 확인했습니다.'},
     {name:'키네틱스 (Keynetix)', url:'https://keynetix.kr/', note:'BSUN·HMX(Haimu)·ChosFox 특주 스위치 취급을 확인했습니다.'},
     {name:'묻고 답하기 — 트리보시스 3204 vs 크라이톡스 205g0 (kbdlab)', url:'https://kbdlab.co.kr/index.php?document_srl=6087276&mid=board_CDST33', note:'국내 윤활제 사용 경향(크라이톡스 205g0가 더 대중적인 이유) 참고.'},
+    {name:'switches.mx (BWLR/switches.mx)', url:'https://switches.mx/', note:'커뮤니티 스위치 데이터베이스. 2026-09 확장 업데이트에서 제조 공장·소재·스펙 교차 확인에 사용했습니다.'},
+    {name:'몬스타기어 공식몰', url:'https://www.monstargear.co.kr/', note:'몬스타기어 특주(아리랑·할로윈·폭스테일 등)와 수입 스위치의 판매 여부·가격을 확인했습니다.'},
+    {name:'다나와 통합검색', url:'https://search.danawa.com/', note:'체리 공식 스토어·키크론 코리아·오픈마켓 판매 목록으로 국내 판매 여부를 교차 확인했습니다.'},
+    {name:'제조사 공식 스펙 페이지 (Gateron·Cherry·Kailh·Keychron·Varmilo·TTC·Wooting 등)', url:'https://www.gateron.com/', note:'신규 스위치의 키압·트레블·소재는 가능한 한 제조사 공식 스펙을 우선 사용했습니다. 스위치별 참고 링크는 각 항목 상세에 표시됩니다.'},
+    {name:'Milktooth · LumeKeebs · Click and Thock · ThockHub', url:'https://milktooth.com/', note:'사운드·타건감 서술에 참고한 해외 리뷰/측정 사이트.'},
   ];
   document.getElementById('sourceList').innerHTML = sources.map(s=>`
     <li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.name)}</a><span class="note">${esc(s.note)}</span></li>
   `).join('');
 
   // ---------- TABS ----------
+  function showView(view, push){
+    const btn = document.querySelector(`#tabs button[data-view="${view}"]`);
+    if(!btn) return;
+    document.querySelectorAll('#tabs button').forEach(b=>{ b.classList.toggle('active', b===btn); b.setAttribute('aria-selected', b===btn ? 'true' : 'false'); });
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+view).classList.add('active');
+    if(push){ try { history.replaceState(null, '', '#'+view); } catch(e){} }
+  }
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('role','tab'));
+  document.getElementById('tabs').setAttribute('role','tablist');
   document.getElementById('tabs').addEventListener('click', e=>{
     const btn = e.target.closest('button[data-view]');
     if(!btn) return;
-    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active', b===btn));
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    showView(btn.dataset.view, true);
   });
+  const initialView = (location.hash||'').replace('#','');
+  if(initialView) showView(initialView, false);
+  window.addEventListener('hashchange', ()=> showView((location.hash||'').replace('#',''), false));
 
   renderDb();
   renderRecommend();
 })();
 </script>
 
-</body></html>
+</body>
+</html>
