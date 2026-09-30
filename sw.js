@@ -1,5 +1,5 @@
 // 스위치 아카이브 서비스 워커 — 한 번 열어본 뒤에는 오프라인에서도 열리게 하고, 온라인이면 뒤에서 최신 파일로 갱신한다.
-const CACHE = 'switch-archive-20260929-656';
+const CACHE = 'switch-archive-20260930-683';
 const CORE = ['./', 'index.html', 'data.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {
